@@ -7,6 +7,7 @@ import { CiSquarePlus } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
 import { IoIosGlobe } from 'react-icons/io'
 import { useState, useRef, useEffect, useCallback } from 'react'
+import MenuTitle from './shared/MenuTitle'
 import React from 'react'
 const Sidebar = () => {
   const sidebarRef = useRef(null)
@@ -50,38 +51,18 @@ const Sidebar = () => {
         onMouseDown={(e) => e.preventDefault()}
         className="min-w-[220px] h-full p-2 flex flex-col  dark:bg-black dark:text-white bg-green-500 text-white"
       >
-        <div className="w-full flex items-center ml-4 mt-4 ">
-          <FaSpotify className="inline text-5xl mr-2 text-white " />
-          <h1 className="inline text-3xl font-semibold text-white text-left ">
+        <div className="w-full flex items-center ml-4 mt-4  ">
+          <FaSpotify className="inline text-5xl mr-2 text-white  " />
+          <h1 className="inline text-3xl font-semibold text-white text-left">
             Spotify
           </h1>
         </div>
-        <div className="flex flex-col w-full  pb-5">
-          <NavLink>
-            <div className=" ml-3 h-10 mt-10  rounded-lgbg-white dark:bg-black">
-              <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
-                <GoHome className=" mx-2 text-3xl " />
-                <h1 className=" text-md font-medium">Home</h1>
-              </div>
-            </div>
-          </NavLink>
-          <NavLink>
-            <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
-              <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
-                <CiSearch className=" mx-2 text-3xl" />
-                <h1 className=" text-md font-medium">Search</h1>
-              </div>
-            </div>
-          </NavLink>
-          <NavLink>
-            <div className=" ml-3 h-10 mt-2  rounded-lg   dark:bg-black">
-              <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black  hover:bg-green-600">
-                <LuLibrary className=" mx-2 text-3xl" />
-                <h1 className=" text-md font-medium">Your Library</h1>
-              </div>
-            </div>
-          </NavLink>
+        <div className="flex flex-col w-full mt-8 pb-5">
+          <MenuTitle title={'Home'} icon={<GoHome />} target={''} />
+          <MenuTitle title={'Search'} icon={<CiSearch />} target={''} />
+          <MenuTitle title={'Your Library'} icon={<LuLibrary />} target={''} />
         </div>
+
         <div className="w-full flex flex-col mt-6 ">
           <NavLink>
             <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
@@ -91,6 +72,7 @@ const Sidebar = () => {
               </div>
             </div>
           </NavLink>
+
           <NavLink>
             <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
               <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
@@ -101,7 +83,7 @@ const Sidebar = () => {
           </NavLink>
         </div>
         <div className="w-full fixed bottom-12  ml-1">
-          <div className="w-fit rounded-full text-sm px-3 py-1 flex items-center gap-1 border-2 border-white hover:bg-green-600">
+          <div className="w-fit rounded-full text-sm px-3 py-1 flex items-center gap-1 border-2 border-white hover:bg-white hover:text-black">
             <IoIosGlobe className="text-2xl" />
             English
           </div>
