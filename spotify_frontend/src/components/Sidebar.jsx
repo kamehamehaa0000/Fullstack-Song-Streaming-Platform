@@ -48,7 +48,7 @@ const Sidebar = () => {
         ref={sidebarRef}
         style={{ width: sidebarWidth }}
         onMouseDown={(e) => e.preventDefault()}
-        className="min-w-[250px] h-full p-2 flex flex-col  dark:bg-black dark:text-white bg-green-500 text-white"
+        className="min-w-[220px] h-full p-2 flex flex-col  dark:bg-black dark:text-white bg-green-500 text-white"
       >
         <div className="w-full flex items-center ml-4 mt-4 ">
           <FaSpotify className="inline text-5xl mr-2 text-white " />
