@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar.jsx'
 import Home from './components/Home.jsx'
 function App() {
   return (
-    <div className="w-screen h-screen font-[Poppins]">
+    <div className="w-screen h-[100vh] font-[Poppins]">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

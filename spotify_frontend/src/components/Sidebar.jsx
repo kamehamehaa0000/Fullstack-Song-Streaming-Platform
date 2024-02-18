@@ -12,7 +12,7 @@ import React from 'react'
 const Sidebar = () => {
   const sidebarRef = useRef(null)
   const [isResizing, setIsResizing] = useState(false)
-  const [sidebarWidth, setSidebarWidth] = useState(268)
+  const [sidebarWidth, setSidebarWidth] = useState(260)
   const [sidebarShowing, setSidebarShowing] = useState(false)
   const startResizing = useCallback((mouseDownEvent) => {
     setIsResizing(true)
@@ -44,12 +44,12 @@ const Sidebar = () => {
   }, [resize, stopResizing])
 
   return (
-    <div className="flex h-full select-none	">
+    <div className="flex h-full z-50 ">
       <div
         ref={sidebarRef}
         style={{ width: sidebarWidth }}
         onMouseDown={(e) => e.preventDefault()}
-        className="min-w-[220px] h-full p-2 flex flex-col  dark:bg-black dark:text-white bg-green-500 text-white"
+        className={`min-w-60 h-full p-2 flex flex-col dark:bg-black dark:text-white bg-green-500 text-white`}
       >
         <div className="w-full flex items-center ml-4 mt-4  ">
           <FaSpotify className="inline text-5xl mr-2 text-white  " />
@@ -82,13 +82,21 @@ const Sidebar = () => {
             </div>
           </NavLink>
         </div>
-        <div className="w-full fixed bottom-12  ml-1">
+        <div className="flex-1"></div>
+        <div className="w-full h-28 bottom-12  ml-1">
           <div className="w-fit rounded-full text-sm px-3 py-1 flex items-center gap-1 border-2 border-white hover:bg-white hover:text-black">
             <IoIosGlobe className="text-2xl" />
             English
           </div>
-          <h1 className="fixed bottom-4 left-2  text-sm">
-            By Aayush Gupta with <span className="text-red-600"> ❤</span>
+          <h1 className=" my-3 text-sm">
+            Clone by{' '}
+            <a
+              href="Https://www.github.com/kamehamehaa0000"
+              target="_blank"
+              className="underline underline-offset-4"
+            >
+              Aayush Gupta
+            </a>
           </h1>
         </div>
       </div>
@@ -101,6 +109,7 @@ const Sidebar = () => {
           onClick={() => {
             setSidebarShowing((prev) => !prev)
             if (sidebarShowing === true) {
+              setSidebarWidth(0)
               sidebarRef.current.style.display = 'none'
             } else {
               sidebarRef.current.style.display = 'flex'
@@ -111,5 +120,4 @@ const Sidebar = () => {
     </div>
   )
 }
-
 export default Sidebar
