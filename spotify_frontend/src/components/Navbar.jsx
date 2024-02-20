@@ -5,9 +5,15 @@ import { NavLink } from 'react-router-dom'
 const Navbar = () => {
   return (
     <div className=" absolute left-0 z-[2] top-0 flex items-center justify-end w-full h-16 dark:bg-black bg-[#22C55E]  ">
-      <HoverText text={'Premium'} />
-      <HoverText text={'Support'} />
-      <HoverText text={'Download'} />
+      <div className="hidden sm:flex">
+        <HoverText text={'Premium'} />
+      </div>
+      <div className="hidden sm:flex">
+        <HoverText text={'Support'} />
+      </div>
+      <div className="hidden sm:flex">
+        <HoverText text={'Download'} />
+      </div>
       <span className="w-[2px] bg-white h-2/3" />
       <NavLink to={'/signup'}>
         <button>
