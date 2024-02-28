@@ -6,7 +6,7 @@ const TextInput = ({ label, type, placeholder, value, onChange }) => {
     onChange(e.target.value)
   }
   return (
-    <div>
+    <div className="">
       <p className="font-semibold">{label} :</p>
       {type === 'password' ? (
         <div className="flex items-center justify-between border-2 border-black rounded-lg p-[2px] my-2">
@@ -31,7 +31,7 @@ const TextInput = ({ label, type, placeholder, value, onChange }) => {
           </button>
         </div>
       ) : (
-        <div className="flex items-center justify-between border-2 border-black rounded-lg p-[2px] my-2">
+        <div className="flex items-center justify-between border-2 border-black rounded-lg p-[2px] my-1">
           <input
             className="w-full dark:text-black border:none px-2 font-medium rounded-lg  p-1 outline-none"
             type={type}

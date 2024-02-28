@@ -1,13 +1,24 @@
-import express, { Router } from 'express'
+import express from 'express'
 import connectDB from './db/connectDB.js'
 import dotenv from 'dotenv'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+
+const app = express()
+
 dotenv.config({
   path: './.env',
 })
+app.use(express.json({ limit: '16kb' }))
+app.use(express.urlencoded({ extended: true, limit: '16kb' }))
+app.use(express.static('public'))
+app.use(cookieParser())
+app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }))
+
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import passport from 'passport'
 import { User } from './models/user.model.js'
-const app = express()
+
 app.use(express.json())
 
 ///////////////-DATABASE-CONNECTION-/////////
@@ -42,12 +53,12 @@ passport.use(
 app.get('/', (req, res) => {
   res.send('<h1>Home</h1>')
 })
-import authRoutes from './routes/auth.route.js'
-import songRoutes from './routes/song.route.js'
-import playlistRoutes from './routes/playlist.route.js'
-app.use('/auth', authRoutes)
-app.use('/song', songRoutes)
-app.use('/playlist', playlistRoutes)
+import userRouter from './routes/user.routes.js'
+import songRoutes from './routes/song.routes.js'
+import playlistRoutes from './routes/playlist.routes.js'
+app.use('/api/v1/auth', userRouter)
+app.use('/api/v1/songs', songRoutes)
+app.use('/api/v1/playlist', playlistRoutes)
 
 /////////////////////////////////////////////////////////
 app.listen(process.env.PORT || 3000, (req, res) => {

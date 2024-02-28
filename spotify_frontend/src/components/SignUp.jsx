@@ -1,15 +1,70 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import TextInput from './shared/TextInput'
 import { Icon } from '@iconify/react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { makeUnauthenticatedPOSTrequest } from '../utils/apiCall.js'
+import { useCookies } from 'react-cookie'
 const SignUp = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [confirmEmail, setConfirmEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPass, setConfirmPass] = useState('')
+  //for storing token on cookies
+  const [cookie, setCookie, removeCookie] = useCookies(['token'])
+  const dataToSend = {
+    firstName,
+    lastName,
+    email: email.trim(),
+    username,
+    password,
+  }
+  const clearAllInputs = () => {
+    setFirstName('')
+    setLastName('')
+    setConfirmEmail('')
+    setEmail('')
+    setPassword('')
+    setConfirmPass('')
+    setUsername('')
+  }
+  const navigate = useNavigate()
 
+  const handleSignUp = async () => {
+    if (confirmEmail == email && confirmPass == password) {
+      let response
+      try {
+        response = await makeUnauthenticatedPOSTrequest(
+          '/auth/register',
+          dataToSend
+        )
+        if (response.data.success == true) {
+          const token = response.data.data.token
+          const expirationDate = new Date()
+          expirationDate.setDate(expirationDate.getDate() + 7) //expires in 7 days from current date
+
+          setCookie('authToken', token, {
+            path: '/',
+            expires: expirationDate,
+          })
+
+          alert('Successfully Registered , Proceed to Login')
+          clearAllInputs()
+          navigate('/home')
+        }
+      } catch (error) {
+        if (error.response.data.success == false) {
+          alert('Registration Failed')
+        }
+        console.log(error.response.data)
+      }
+    } else {
+      alert('Confirm your email and password')
+    }
+  }
   return (
     <div className="min-h-screen flex flex-col items-center justify-center dark:bg-black dark:text-white">
       <div className="w-full flex items-center justify-center mb-8">
@@ -21,7 +76,23 @@ const SignUp = () => {
         <span className="text-green-500">Spotify</span>
       </p>
 
-      <div className="max-w-md w-full p-6 bg-white text-black rounded-lg  sm:shadow-lg dark:bg-black dark:text-white ">
+      <div className="max-w-md w-full p-4 bg-white text-black rounded-lg  sm:shadow-lg dark:bg-black dark:text-white ">
+        <div className="flex">
+          <TextInput
+            label={'First Name'}
+            placeholder={'Enter your First Name'}
+            type={'text'}
+            value={firstName}
+            onChange={setFirstName}
+          />
+          <TextInput
+            label={'Last Name'}
+            placeholder={'Enter your Last Name'}
+            type={'text'}
+            value={lastName}
+            onChange={setLastName}
+          />
+        </div>
         <TextInput
           label={'Email Address'}
           placeholder={'Enter your email address'}
@@ -59,7 +130,10 @@ const SignUp = () => {
         />
         <div className="flex items-center justify-between mt-4">
           <h5 className="text-sm hover:text-green-500">Forgot Password?</h5>
-          <button className="px-4 py-2 text-white bg-green-500 rounded-full ">
+          <button
+            className="px-4 py-2 text-white bg-green-500 rounded-full "
+            onClick={handleSignUp}
+          >
             Sign Up
           </button>
         </div>
