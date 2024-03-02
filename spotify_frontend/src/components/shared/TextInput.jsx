@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react'
-const TextInput = ({ label, type, placeholder, value, onChange }) => {
+const TextInput = ({ label, type, placeholder, value, onChange, required }) => {
   const [seePass, setSeePass] = useState(false)
   const handleOnchange = (e) => {
     onChange(e.target.value)
@@ -16,6 +16,7 @@ const TextInput = ({ label, type, placeholder, value, onChange }) => {
             placeholder={placeholder}
             value={value}
             onChange={handleOnchange}
+            required={required}
           />
           <button
             className="p-2 dark:border-[1px] dark: border-white dark:bg-white dark:text-black dark:rounded-r-lg "
@@ -38,6 +39,7 @@ const TextInput = ({ label, type, placeholder, value, onChange }) => {
             placeholder={placeholder}
             value={value}
             onChange={handleOnchange}
+            required={required}
           />
         </div>
       )}

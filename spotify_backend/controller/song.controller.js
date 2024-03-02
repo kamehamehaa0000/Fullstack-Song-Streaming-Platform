@@ -21,9 +21,11 @@ const createNewSong = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, { createdSong }))
   } catch (error) {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, { error: 'Error during creating the song.' }))
+    return res.status(500).json(
+      new ApiResponse(error.statusCode, {
+        error: 'Error during creating the song.',
+      })
+    )
   }
 })
 

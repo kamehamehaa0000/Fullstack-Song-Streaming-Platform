@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { makeUnauthenticatedPOSTrequest } from '../utils/apiCall.js'
 import { useCookies } from 'react-cookie'
+import { stringify } from 'postcss'
 const SignUp = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
@@ -14,7 +15,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('')
   const [confirmPass, setConfirmPass] = useState('')
   //for storing token on cookies
-  const [cookie, setCookie, removeCookie] = useCookies(['token'])
+  const [cookie, setCookie, removeCookie] = useCookies(['userData'])
   const dataToSend = {
     firstName,
     lastName,
@@ -43,10 +44,16 @@ const SignUp = () => {
         )
         if (response.data.success == true) {
           const token = response.data.data.token
+
+          const userDets = JSON.stringify(response.data.data.user)
           const expirationDate = new Date()
           expirationDate.setDate(expirationDate.getDate() + 7) //expires in 7 days from current date
 
           setCookie('authToken', token, {
+            path: '/',
+            expires: expirationDate,
+          })
+          setCookie('details', userDets, {
             path: '/',
             expires: expirationDate,
           })
@@ -56,10 +63,12 @@ const SignUp = () => {
           navigate('/home')
         }
       } catch (error) {
-        if (error.response.data.success == false) {
-          alert('Registration Failed')
+        if (error.response && !error.response.data.success) {
+          alert(error.response.data.message)
+        } else {
+          console.error('Unexpected error during registeration:', error)
+          // Handle unexpected error in UI or perform other actions
         }
-        console.log(error.response.data)
       }
     } else {
       alert('Confirm your email and password')
