@@ -7,15 +7,13 @@ const Home = () => {
   const [cookie, setCookie] = useCookies(['authToken'])
 
   return (
-    <div className=" flex w-screen h-full ">
-      <div
-        id="content"
-        className="bg-[#fae2db] z-[0] p-4 flex gap-4 flex-wrap mt-16 dark:bg-black "
-      >
-        <CardDeck title={'Focus'} />
-        <CardDeck title={'Trending'} />
-        <CardDeck title={'Viral Charts'} />
-      </div>
+    <div
+      id="content"
+      className="bg-[#fae2db] z-[0] p-4 flex gap-4 flex-wrap mt-16 dark:bg-black "
+    >
+      <CardDeck title={'Focus'} />
+      <CardDeck title={'Trending'} />
+      <CardDeck title={'Viral Charts'} />
     </div>
   )
 }

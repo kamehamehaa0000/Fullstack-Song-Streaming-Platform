@@ -4,6 +4,7 @@ import SignUp from './components/SignUp.jsx'
 import Home from './components/Home.jsx'
 import { useCookies } from 'react-cookie'
 import MainLayout from './components/MainLayout.jsx'
+import AddSong from './components/AddSong.jsx'
 function App() {
   const [cookie, setCookie] = useCookies(['authToken'])
 
@@ -15,6 +16,7 @@ function App() {
             <Routes>
               <Route path={'/home'} element={<Home />} />
               <Route path={'/'} element={<Home />} />
+              <Route path={'/addsong'} element={<AddSong />} />
               <Route path="*" element={<Navigate to="/home" />} />
             </Routes>
           ) : (

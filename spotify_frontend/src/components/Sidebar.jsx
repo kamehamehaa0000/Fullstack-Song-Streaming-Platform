@@ -85,7 +85,7 @@ const Sidebar = ({ isLogin }) => {
         </div>
         {isLogin ? (
           <div className="w-full flex flex-col mt-6 ">
-            <NavLink>
+            <NavLink to={'/addsong'}>
               <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
                 <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
                   <CiSquarePlus className=" rounded-lg mx-2 text-3xl" />

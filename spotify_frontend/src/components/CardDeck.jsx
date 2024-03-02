@@ -17,11 +17,22 @@ const CardDeck = ({ title, playlistData }) => {
           {title}
         </h1>
       </div>
+      {/* <button
+        onClick={(e) => {
+          const container = cardContainerRef.current
+          if (container) {
+            container.scrollLeft += 100
+          }
+        }}
+        className=" top-1/2 "
+      >
+        {'<'}
+      </button> */}
 
       <div
         onWheel={handleWheelScroll}
         ref={cardContainerRef}
-        className="flex flex-wrap-0 gap-4 sm:gap-6 py-4  sm:px-8 w-full overflow-x-auto "
+        className="relative flex flex-wrap-0 gap-4 sm:gap-6 py-4  sm:px-8 w-full overflow-x-auto "
       >
         <Card
           title={'Daily Mix 1'}
