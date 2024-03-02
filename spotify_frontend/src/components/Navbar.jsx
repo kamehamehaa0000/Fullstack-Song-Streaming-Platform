@@ -36,7 +36,7 @@ const Navbar = ({ isLogin, userDets }) => {
             >
               Log Out
             </button>
-          </NavLink>{' '}
+          </NavLink>
         </>
       ) : (
         <>

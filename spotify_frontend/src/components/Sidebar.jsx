@@ -9,7 +9,8 @@ import { IoIosGlobe } from 'react-icons/io'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import MenuTitle from './shared/MenuTitle'
 import React from 'react'
-const Sidebar = () => {
+
+const Sidebar = ({ isLogin }) => {
   const sidebarRef = useRef(null)
   const [isResizing, setIsResizing] = useState(false)
   const [sidebarWidth, setSidebarWidth] = useState(260)
@@ -82,8 +83,23 @@ const Sidebar = () => {
             </div>
           </NavLink>
         </div>
-        <div className="flex-1"></div>
-        <div className="w-full h-28 bottom-12  ml-1">
+        {isLogin ? (
+          <div className="w-full flex flex-col mt-6 ">
+            <NavLink>
+              <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
+                <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
+                  <CiSquarePlus className=" rounded-lg mx-2 text-3xl" />
+                  <h1 className=" text-md font-medium">Add a Song</h1>
+                </div>
+              </div>
+            </NavLink>
+          </div>
+        ) : (
+          ''
+        )}
+
+        <div className="flex-1 "></div>
+        <div className="w-full h-28 bottom-12 select-none ml-1">
           <div className="w-fit rounded-full text-sm px-3 py-1 flex items-center gap-1 border-2 border-white hover:bg-white hover:text-black">
             <IoIosGlobe className="text-2xl" />
             English
