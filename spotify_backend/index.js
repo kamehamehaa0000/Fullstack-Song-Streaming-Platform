@@ -38,7 +38,6 @@ passport.use(
         // Token is either invalid or revoked
         return done(null, false)
       }
-      console.log(user)
       if (user) {
         return done(null, user)
       } else {
@@ -61,6 +60,6 @@ app.use('/api/v1/songs', songRoutes)
 app.use('/api/v1/playlist', playlistRoutes)
 
 /////////////////////////////////////////////////////////
-app.listen(process.env.PORT || 3000, (req, res) => {
+app.listen(process.env.PORT, (req, res) => {
   console.log('server is running on port ', process.env.PORT || 3000)
 })

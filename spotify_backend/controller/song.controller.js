@@ -3,18 +3,57 @@ import { User } from '../models/user.model.js'
 import { asyncHandler } from '../util/asyncHandler.js'
 import { ApiError } from '../util/ApiError.js'
 import { ApiResponse } from '../util/ApiResponse.js'
-
+import { uploadOnCloudinary } from '../util/cloudinary.js'
 const createNewSong = asyncHandler(async (req, res) => {
-  const { name, thumbnail, track } = req.body
+  const { name } = req.body
   const artist = req.user.id // from passport.authenticate
-
   try {
-    if (!name || !thumbnail || !track) {
-      throw new ApiError(401, 'Insufficient details to create a song.')
+    //checking if file is recieved from multer or not
+    let thumbnailLocalPath
+    if (
+      req.files &&
+      Array.isArray(req.files.thumbnail) &&
+      req.files.thumbnail.length > 0
+    ) {
+      thumbnailLocalPath = req.files?.thumbnail[0]?.path
     }
 
-    const createdSong = await Song.create({ name, thumbnail, track, artist })
+    //uploading on Cloudinary
+    // const thumbnail = await uploadOnCloudinary(thumbnailLocalPath)
+    let trackLocalPath
+    if (
+      req.files &&
+      Array.isArray(req.files.track) &&
+      req.files.track.length > 0
+    ) {
+      trackLocalPath = req.files?.track[0]?.path
+    }
+    console.log(trackLocalPath)
+    console.log(thumbnailLocalPath)
+    //uploading on Cloudinary
+    // const track = await uploadOnCloudinary(trackLocalPath)
+    // console.log(track)
+    let track = await uploadOnCloudinary(trackLocalPath).catch((error) => {
+      console.log(error)
+    })
+    let thumbnail = await uploadOnCloudinary(thumbnailLocalPath).catch(
+      (error) => {
+        console.log(error)
+      }
+    )
 
+    if (!thumbnail || !track || !name) {
+      throw new ApiError(401, 'Insufficient data to create a song.')
+    }
+    console.log(track.url)
+    console.log(thumbnail.url)
+    const createdSong = await Song.create({
+      name,
+      thumbnail: thumbnail.url,
+      track: track.url,
+      artist,
+    })
+    console.log(createdSong)
     if (!createdSong) {
       throw new ApiError(402, 'Error creating the song.')
     }
@@ -23,7 +62,7 @@ const createNewSong = asyncHandler(async (req, res) => {
   } catch (error) {
     return res.status(500).json(
       new ApiResponse(error.statusCode, {
-        error: 'Error during creating the song.',
+        error: error.message,
       })
     )
   }

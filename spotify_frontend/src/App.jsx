@@ -16,7 +16,10 @@ function App() {
             <Routes>
               <Route path={'/home'} element={<Home />} />
               <Route path={'/'} element={<Home />} />
-              <Route path={'/addsong'} element={<AddSong />} />
+              <Route
+                path={'/addsong'}
+                element={<AddSong token={cookie.authToken} />}
+              />
               <Route path="*" element={<Navigate to="/home" />} />
             </Routes>
           ) : (
