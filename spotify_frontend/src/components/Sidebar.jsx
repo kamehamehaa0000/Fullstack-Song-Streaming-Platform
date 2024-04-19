@@ -6,6 +6,8 @@ import { LuLibrary } from 'react-icons/lu'
 import { CiSquarePlus } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
 import { IoIosGlobe } from 'react-icons/io'
+import { LuListMusic } from 'react-icons/lu'
+
 import { useState, useRef, useEffect, useCallback } from 'react'
 import MenuTitle from './shared/MenuTitle'
 import React from 'react'
@@ -90,6 +92,14 @@ const Sidebar = ({ isLogin }) => {
                 <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
                   <CiSquarePlus className=" rounded-lg mx-2 text-3xl" />
                   <h1 className=" text-md font-medium">Add a Song</h1>
+                </div>
+              </div>
+            </NavLink>
+            <NavLink to={'/mysongs'}>
+              <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
+                <div className="w-full h-full flex items-center rounded-lg  dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
+                  <LuListMusic className="h-7 w-7  rounded-sm p-[4px] mx-2 text-2xl" />
+                  <h1 className=" text-md font-medium">My Songs</h1>
                 </div>
               </div>
             </NavLink>
