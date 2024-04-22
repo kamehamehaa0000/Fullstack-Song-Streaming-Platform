@@ -14,13 +14,26 @@ export const makeUnauthenticatedPOSTrequest = async (route, data) => {
   }
 }
 
-export const makeAuthenticatedPOSTrequest = async (route, data) => {
+export const makeAuthenticatedPOSTrequest = async (route, data, token) => {
   const response = await fetch(`${ApiURL}${route}`, {
     method: 'POST',
     headers: {
       'content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(body),
+  })
+  const formattedResponse = await response.json()
+  return formattedResponse
+}
+
+export const makeAuthenticatedGETrequest = async (route, token) => {
+  const response = await fetch(`${ApiURL}${route}`, {
+    method: 'GET',
+    headers: {
+      'content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   })
   const formattedResponse = await response.json()
   return formattedResponse

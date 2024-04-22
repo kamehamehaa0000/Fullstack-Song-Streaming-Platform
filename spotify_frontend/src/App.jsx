@@ -9,7 +9,6 @@ import MySongs from './components/MySongs.jsx'
 
 function App() {
   const [cookie, setCookie] = useCookies(['authToken'])
-
   return (
     <div className="w-screen h-[100vh] font-[Poppins]">
       <BrowserRouter>

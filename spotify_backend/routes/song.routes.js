@@ -5,6 +5,7 @@ import {
   getSongByArtist,
   getSongBySongName,
   createNewSong,
+  getAllSongs,
 } from '../controller/song.controller.js'
 const router = Router()
 import { upload } from '../middlewares/multer.middleware.js'
@@ -29,4 +30,5 @@ router
   .route('/get/song/:songname')
   .get(passport.authenticate('jwt', { session: false }), getSongBySongName)
 
+router.route('/get/allsongs').get(getAllSongs)
 export default router

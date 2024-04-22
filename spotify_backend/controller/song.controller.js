@@ -4,6 +4,7 @@ import { asyncHandler } from '../util/asyncHandler.js'
 import { ApiError } from '../util/ApiError.js'
 import { ApiResponse } from '../util/ApiResponse.js'
 import { uploadOnCloudinary } from '../util/cloudinary.js'
+
 const createNewSong = asyncHandler(async (req, res) => {
   const { name } = req.body
   const artist = req.user.id // from passport.authenticate
@@ -36,6 +37,7 @@ const createNewSong = asyncHandler(async (req, res) => {
     let track = await uploadOnCloudinary(trackLocalPath).catch((error) => {
       console.log(error)
     })
+    console.log(track)
     let thumbnail = await uploadOnCloudinary(thumbnailLocalPath).catch(
       (error) => {
         console.log(error)
@@ -52,6 +54,7 @@ const createNewSong = asyncHandler(async (req, res) => {
       thumbnail: thumbnail.url,
       track: track.url,
       artist,
+      duration: track.duration,
     })
     console.log(createdSong)
     if (!createdSong) {
@@ -70,7 +73,11 @@ const createNewSong = asyncHandler(async (req, res) => {
 
 const getMysongs = asyncHandler(async (req, res) => {
   try {
-    const songs = await Song.find({ artist: req.user._id })
+    const songs = await Song.find({ artist: req.user._id }).populate({
+      path: 'artist',
+      select: 'username firstName lastName ',
+    })
+
     return res.status(200).json(new ApiResponse(200, { data: songs }))
   } catch (error) {
     console.error(error)
@@ -118,4 +125,25 @@ const getSongBySongName = asyncHandler(async (req, res) => {
   }
 })
 
-export { getMysongs, getSongByArtist, getSongBySongName, createNewSong }
+const getAllSongs = asyncHandler(async (req, res) => {
+  try {
+    const songs = await Song.find().populate({
+      path: 'artist',
+      select: 'username firstName lastName ',
+    })
+    return res.status(200).json(new ApiResponse(200, { data: songs }))
+  } catch (error) {
+    console.error(error)
+    return res
+      .status(500)
+      .json(new ApiResponse(500, { error: 'Error during fetching the songs.' }))
+  }
+})
+
+export {
+  getMysongs,
+  getSongByArtist,
+  getSongBySongName,
+  createNewSong,
+  getAllSongs,
+}
