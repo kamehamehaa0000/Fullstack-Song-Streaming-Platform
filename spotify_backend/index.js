@@ -33,7 +33,8 @@ opts.secretOrKey = process.env.JWT_SECRET
 passport.use(
   new JwtStrategy(opts, async function (jwt_payload, done) {
     try {
-      const user = await User.findOne({ id: jwt_payload.sub })
+      console.log(jwt_payload.identifier)
+      const user = await User.findOne({ _id: jwt_payload.identifier })
       if (!user || (user.tokens && user.tokens.includes(jwt_payload.token))) {
         // Token is either invalid or revoked
         return done(null, false)

@@ -7,8 +7,9 @@ import { uploadOnCloudinary } from '../util/cloudinary.js'
 
 const createNewSong = asyncHandler(async (req, res) => {
   const { name } = req.body
-  const artist = req.user.id // from passport.authenticate
+  const artistID = req.user._id // from passport.authenticate
   try {
+    console.log(req.user, 'is the userId after ')
     //checking if file is recieved from multer or not
     let thumbnailLocalPath
     if (
@@ -53,7 +54,7 @@ const createNewSong = asyncHandler(async (req, res) => {
       name,
       thumbnail: thumbnail.url,
       track: track.url,
-      artist,
+      artist: artistID,
       duration: track.duration,
     })
     console.log(createdSong)

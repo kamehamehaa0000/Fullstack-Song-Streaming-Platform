@@ -4,7 +4,7 @@ import { HiDotsVertical } from 'react-icons/hi'
 
 const SingleSongCard = ({
   songTitle = 'Title of the song',
-  artist = 'Kr$na',
+  artist = '',
   track,
   duration = '_:_',
   thumbnail = 'https://images.genius.com/3c84341c543bd17134c0d4e15b3a26db.1000x1000x1.jpg',

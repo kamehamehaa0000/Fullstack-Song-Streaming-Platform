@@ -71,7 +71,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     const token = await getToken(email, user)
-
+    console.log(await getToken(email, user))
     return res.status(200).json(
       new ApiResponse(200, {
         user: {

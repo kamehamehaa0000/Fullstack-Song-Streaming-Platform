@@ -36,7 +36,6 @@ const MySongs = () => {
 
     sound.play()
   }
-  console.log(currentSongPlaying)
 
   return (
     <div className="w-full min-h-[100vh] p-20 flex flex-grow flex-wrap gap-3 dark:text-white ">
