@@ -91,11 +91,10 @@ const AddSong = ({ token }) => {
           />
           <button
             onClick={handleSubmit}
-            className="relative mx-auto my-4 w-1/2 px-8 py-2 rounded-md bg-black isolation-auto z-10 border-2 border-neutral-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-indigo-500 text-white before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700"
+            className="relative mx-auto my-4 w-1/2 px-8 py-2 rounded-full bg-black isolation-auto z-10 border-2 border-neutral-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-indigo-500 text-white before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700"
           >
             Add Song
           </button>
-          <audio controls src={songRecieved} className="mx-auto" />
         </div>
       )}
     </div>

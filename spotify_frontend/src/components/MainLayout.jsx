@@ -2,24 +2,30 @@ import React from 'react'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 import CardDeck from './CardDeck.jsx'
+import Player from './shared/Player.jsx'
 import { useCookies } from 'react-cookie'
 const MainLayout = ({ children }) => {
   const [cookie, setCookie] = useCookies(['authToken'])
 
   return (
     <div>
-      <div className=" flex w-screen h-[100vh] ">
+      <div className="flex w-screen h-screen ">
         <Sidebar isLogin={cookie.authToken ? true : false} />
-        <div
-          className={`flex-1 z-40 h-screen dark:bg-black  overflow-y-scroll`}
-        >
+        <div className={`flex-1 z-40 h-full dark:bg-black  overflow-y-scroll`}>
           <Navbar
             isLogin={cookie.authToken ? true : false}
             userDets={cookie.details}
           />
-          <main>{children}</main>
+          <main className="h-[92%]">{children}</main>{' '}
+          {cookie.authToken ? (
+            <div className="w-full h-[8%] min-h-[80px]  fixed bottom-0 ">
+              <Player />
+            </div>
+          ) : (
+            ''
+          )}
         </div>
-      </div>
+      </div>{' '}
     </div>
   )
 }
