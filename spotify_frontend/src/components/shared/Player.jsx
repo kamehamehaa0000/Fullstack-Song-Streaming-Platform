@@ -8,6 +8,7 @@ import { LuRepeat } from 'react-icons/lu'
 import { LuRepeat1 } from 'react-icons/lu'
 import { Howl, Howler } from 'howler'
 import songContext from '../contexts/songContext.js'
+import queueContext from '../contexts/queueContext.js'
 const Player = () => {
   const {
     currentSong,
@@ -17,56 +18,113 @@ const Player = () => {
     isPlaying,
     setIsPlaying,
   } = useContext(songContext)
+
   const [repeatOnce, setRepeatOnce] = useState(false)
+  const { queue, setQueue } = useContext(queueContext)
+  const [volume, setVolume] = useState(0.5)
 
   useEffect(() => {
-    if (!currentSong) {
-      return
+    if (currentSong) {
+      playSong(currentSong)
     }
-    changeSong(currentSong.track)
   }, [currentSong])
 
-  const playSound = () => {
-    if (!soundPlayed) {
-      return
-    }
-    soundPlayed.play()
-  }
-  const changeSong = () => {
+  const playSong = (song) => {
     if (soundPlayed) {
       soundPlayed.stop()
     }
     const sound = new Howl({
-      src: [currentSong?.track],
+      src: [song.track],
       html5: true,
-      onend: function () {
-        setCurrentSong(null) // Reset currentSongPlaying after the sound ends
+      volume: volume,
+      onend: () => {
+        removeSongFromQueue(song)
+        if (queue.length > 0) {
+          playNextSong()
+        } else {
+          setIsPlaying(false)
+        }
       },
     })
     setSoundPlayed(sound)
     setIsPlaying(true)
     sound.play()
   }
-  const pauseSound = () => {
-    soundPlayed.pause()
+
+  const addSongToQueue = (song) => {
+    setQueue([...queue, song])
   }
+
+  const removeSongFromQueue = (song) => {
+    setQueue(queue.filter((queuedSong) => queuedSong._id !== song._id))
+  }
+
+  const playNextSong = () => {
+    if (queue.length == 0) {
+      return
+    }
+
+    const nextSongIndex =
+      queue.findIndex((song) => song._id === currentSong._id) + 1
+    if (nextSongIndex < queue.length) {
+      setCurrentSong(queue[nextSongIndex])
+      playSong(queue[nextSongIndex])
+    }
+  }
+
+  const playPreviousSong = () => {
+    const previousSongIndex =
+      queue.findIndex((song) => song._id === currentSong._id) - 1
+    if (previousSongIndex >= 0) {
+      setCurrentSong(queue[previousSongIndex])
+      playSong(queue[previousSongIndex])
+    }
+  }
+
+  const playPauseToggle = () => {
+    if (!isPlaying) {
+      if (!currentSong) {
+        const firstSong = queue[0]
+        setCurrentSong(firstSong)
+        playSong(firstSong)
+      } else {
+        soundPlayed.play()
+        setIsPlaying(true)
+      }
+    } else {
+      soundPlayed.pause()
+      setIsPlaying(false)
+    }
+  }
+  const handleVolumeChange = (event) => {
+    const newVolume = parseFloat(event.target.value) // Get the new volume value from the slider
+    setVolume(newVolume)
+  }
+  useEffect(() => {
+    if (soundPlayed) {
+      soundPlayed.volume(volume)
+    }
+  }, [volume])
   return (
     <div
       className={`${
-        currentSong.track ? 'flex' : 'hidden'
+        currentSong ? 'flex' : 'hidden'
       } w-full px-5 py-1 h-full items-center flex gap-10 text-white bg-black`}
     >
       <div className="flex min-w-[200px]">
         <div className="flex relative group items-center ">
           <img
-            src={currentSong.thumbnail || ''}
+            src={
+              currentSong.thumbnail ||
+              'https://upperground.art/wp-content/themes/artbat/assets/img/place.png'
+            }
             alt=""
-            className=" w-[50px] h-[50px] max-w-[50px] max-h-[50px] rounded-lg"
+            className="w-[50px] h-[50px] max-w-[50px] max-h-[50px] rounded-lg"
           />
           <img
             src="https://i.pinimg.com/originals/a5/5a/68/a55a685b8375807667122027d72de120.gif"
-            className="hidden h-fit m-w-[50px]  rounded-lg group-hover:block absolute top-0 left-0  bg-white opacity-70 "
-          ></img>
+            className="hidden h-fit m-w-[50px] rounded-lg group-hover:block absolute top-0 left-0 bg-white opacity-70 "
+          />
         </div>
         <div className="">
           <p className="hover:underline hover:cursor-pointer text-md mx-2">
@@ -77,32 +135,19 @@ const Player = () => {
           </p>
         </div>
       </div>
-
-      <div className=" flex flex-col justify-center items-center w-3/5 ">
+      <div className="flex flex-col justify-center items-center w-3/5 ">
         <div className="flex items-center text-xl gap-5">
-          <button>
+          <button onClick={playPreviousSong}>
             <TbPlayerSkipBackFilled />
           </button>
-
-          <button
-            className=""
-            onClick={() => {
-              if (!isPlaying) {
-                playSound(currentSong.track)
-                setIsPlaying((prev) => !prev)
-              } else {
-                pauseSound()
-                setIsPlaying((prev) => !prev)
-              }
-            }}
-          >
+          <button className="" onClick={playPauseToggle}>
             {isPlaying ? (
               <TbPlayerPauseFilled className="text-white" />
             ) : (
               <TbPlayerPlayFilled className="text-white" />
             )}
           </button>
-          <button>
+          <button onClick={playNextSong}>
             <TbPlayerSkipForwardFilled />
           </button>
           <button
@@ -113,18 +158,17 @@ const Player = () => {
             {repeatOnce ? <LuRepeat1 /> : <LuRepeat />}
           </button>
         </div>
-        <div>progress bar</div>
       </div>
-      <div className=" min-w-[100px] flex items-center ">
-        <input type="range" max={100} min={0} className="" />
+      <div className="min-w-[100px] flex items-center ">
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+        />
       </div>
-      {/* <TbPlayerPauseFilled />
-      <TbPlayerPlayFilled />
-      <TbPlayerSkipBackFilled />
-      <TbPlayerSkipForwardFilled />
-      <LuRepeat />
-      <LuRepeat1 />
-      <TbPlayerPlay /> */}
     </div>
   )
 }

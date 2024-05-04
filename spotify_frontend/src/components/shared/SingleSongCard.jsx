@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { IoPlay } from 'react-icons/io5'
 import { HiDotsVertical } from 'react-icons/hi'
 import PlayerContext from '../contexts/songContext.js'
+import queueContext from '../contexts/queueContext.js'
 const SingleSongCard = ({
   songTitle = 'Title of the song',
   artist = '',
@@ -12,18 +13,18 @@ const SingleSongCard = ({
 }) => {
   const minutes = Math.floor(duration / 60)
   const seconds = Math.floor(duration % 60)
-  const fractionalPart = Math.round((duration % 1) * 1000) / 1000 // Round to three decimal places
   duration = `${minutes}:${seconds.toString().padStart(2, '0')}`
   const { currentSong, setCurrentSong } = useContext(PlayerContext)
+  const { queue, setQueue } = useContext(queueContext)
   return (
-    <div
-      className="text-white w-full h-16 min-w-[260px] overflow-hidden max-w-[400px]  bg-zinc-800 p-2 rounded-lg flex "
-      onClick={() => {
-        setCurrentSong(() => info)
-        console.log(currentSong)
-      }}
-    >
-      <div className="relative group w-[45px] h-[45px] rounded-lg mr-3 overflow-hidden">
+    <div className=" text-white w-full h-16 min-w-[260px]  max-w-[400px]  bg-zinc-800 p-2 rounded-lg flex ">
+      <div
+        onClick={() => {
+          setCurrentSong(() => info)
+          console.log(currentSong)
+        }}
+        className="relative group w-[45px] h-[45px] rounded-lg mr-3 overflow-hidden"
+      >
         <img src={thumbnail} alt="" className="" />
         <div className="hidden  bg-black opacity-50 w-full h-full group-hover:flex items-center justify-center absolute top-0 rounded-lg">
           <button className="">
@@ -36,10 +37,31 @@ const SingleSongCard = ({
         <h5 className="text-xs  hover:underline font-light">{artist}</h5>
       </div>
       <span className=" my-auto  text-zinc-500 mr-2">{duration}</span>
-      <span className=" my-auto  text-white text-xl font-bold ">
+      <span className="relative group my-auto  text-white text-xl font-bold ">
         <button>
           <HiDotsVertical />
         </button>
+        <div className="absolute z-30 top-0 left-2 w-max p-2 hidden group-hover:flex">
+          <div className="flex flex-col rounded-lg overflow-hidden bg-zinc-900">
+            <button
+              onClick={() => {
+                setCurrentSong(() => info)
+              }}
+              className="text-sm w-200px p-2  "
+            >
+              Play
+            </button>
+            <button
+              onClick={() => {
+                setQueue((prev) => [...prev, info])
+                console.log(queue)
+              }}
+              className="text-sm w-200px p-2  "
+            >
+              Add To Queue
+            </button>
+          </div>
+        </div>
       </span>
     </div>
   )
