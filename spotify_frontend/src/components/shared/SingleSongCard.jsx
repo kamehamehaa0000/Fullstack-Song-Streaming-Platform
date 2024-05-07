@@ -10,6 +10,7 @@ const SingleSongCard = ({
   duration = '_:_',
   thumbnail = 'https://images.genius.com/3c84341c543bd17134c0d4e15b3a26db.1000x1000x1.jpg',
   info,
+  duringSearch = false,
 }) => {
   const minutes = Math.floor(duration / 60)
   const seconds = Math.floor(duration % 60)
@@ -17,7 +18,9 @@ const SingleSongCard = ({
   const { currentSong, setCurrentSong } = useContext(PlayerContext)
   const { queue, setQueue } = useContext(queueContext)
   return (
-    <div className=" text-white w-full h-16 min-w-[260px]  max-w-[400px]  bg-zinc-800 p-2 rounded-lg flex ">
+    <div
+      className={` text-white w-full h-16 min-w-[260px]  max-w-[350px]  bg-zinc-800 p-2 rounded-lg flex `}
+    >
       <div
         onClick={() => {
           setCurrentSong(() => info)
@@ -41,8 +44,8 @@ const SingleSongCard = ({
         <button>
           <HiDotsVertical />
         </button>
-        <div className="absolute z-30 top-0 left-2 w-max p-2 hidden group-hover:flex">
-          <div className="flex flex-col rounded-lg overflow-hidden bg-zinc-900">
+        <div className="absolute z-30 top-0 left-2 w-max p-2 hidden group-hover:flex opacity-80 ">
+          <div className="flex flex-col rounded-lg overflow-hidden bg-zinc-700 border-[2px]">
             <button
               onClick={() => {
                 setCurrentSong(() => info)
@@ -51,6 +54,7 @@ const SingleSongCard = ({
             >
               Play
             </button>
+            <div className="h-[3px] w-full bg-white"></div>
             <button
               onClick={() => {
                 setQueue((prev) => [...prev, info])

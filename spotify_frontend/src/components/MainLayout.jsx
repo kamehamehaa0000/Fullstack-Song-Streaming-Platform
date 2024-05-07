@@ -1,7 +1,6 @@
 import React from 'react'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
-import CardDeck from './CardDeck.jsx'
 import Player from './shared/Player.jsx'
 import { useCookies } from 'react-cookie'
 const MainLayout = ({ children }) => {

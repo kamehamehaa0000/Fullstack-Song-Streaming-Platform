@@ -115,10 +115,11 @@ const getSongBySongName = asyncHandler(async (req, res) => {
     }
     const songs = await Song.find({
       name: { $regex: new RegExp(songname, 'i') }, // pattern matching instead of direact matching
-    })
+    }).populate('artist')
     if (!songs) {
       throw new ApiError(404, 'Songs not found.')
     }
+    console.log(songs)
     return res.status(200).json(new ApiResponse(200, { data: songs }))
   } catch (error) {
     console.error(error)

@@ -6,11 +6,17 @@ import {
   getPlaylistByID,
   createPlaylist,
 } from '../controller/playlist.controller.js'
+import { upload } from '../middlewares/multer.middleware.js'
+
 const router = Router()
 
 router
   .route('/create')
-  .post(passport.authenticate('jwt', { session: false }), createPlaylist)
+  .post(
+    upload.single('thumbnail'),
+    passport.authenticate('jwt', { session: false }),
+    createPlaylist
+  )
 
 router
   .route('/get/playlist/:playlistID')

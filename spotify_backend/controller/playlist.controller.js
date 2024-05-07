@@ -4,26 +4,29 @@ import { Playlist } from '../models/playlist.model.js'
 import { asyncHandler } from '../util/asyncHandler.js'
 import { ApiError } from '../util/ApiError.js'
 import { ApiResponse } from '../util/ApiResponse.js'
-
+import { uploadOnCloudinary } from '../util/cloudinary.js'
 const createPlaylist = asyncHandler(async (req, res) => {
   try {
     const currentUser = req.user
-    const { name, thumbnail, songs } = req.body
+    const thumbnail = req.file.path
+    const { name } = req.body
+    let thumbnailUrl = await uploadOnCloudinary(thumbnail).catch((error) => {
+      console.log(error)
+    })
 
-    if (!name || !thumbnail || !songs) {
-      throw new ApiError(400, 'Insufficient data to add song')
+    if (!thumbnail || !name) {
+      throw new ApiError(401, 'Insufficient data to create a song.')
     }
-
     const playlistData = {
       name,
-      thumbnail,
-      songs,
+      thumbnail: thumbnailUrl.url,
+      songs: [],
       owner: currentUser._id,
       collaborators: [],
     }
 
     const playlist = await Playlist.create(playlistData)
-
+    console.log(playlist)
     if (!playlist) {
       throw new ApiError(401, 'Playlist creation failed')
     }

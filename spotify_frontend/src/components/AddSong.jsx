@@ -61,7 +61,7 @@ const AddSong = ({ token }) => {
       {loading ? (
         loadingAnimation
       ) : (
-        <div className="  flex flex-col max-w-md mt-16 p-10 dark:border-2  bg-white dark:bg-zinc-900 shadow-2xl rounded-2xl overflow-hidden border-4 border-lime-400 dark:border-indigo-400">
+        <div className="  flex flex-col max-w-md mt-16 p-10 dark:border-2  bg-white dark:bg-zinc-950 shadow-2xl rounded-2xl overflow-hidden border-4 border-white">
           <input
             type="text"
             onChange={(e) => setSongName(e.target.value)}

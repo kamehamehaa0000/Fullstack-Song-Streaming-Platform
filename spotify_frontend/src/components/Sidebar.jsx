@@ -7,12 +7,13 @@ import { CiSquarePlus } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
 import { IoIosGlobe } from 'react-icons/io'
 import { LuListMusic } from 'react-icons/lu'
-
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useContext } from 'react'
 import MenuTitle from './shared/MenuTitle'
 import React from 'react'
+import createPlaylistModalContext from './contexts/createPlaylistModal'
 
 const Sidebar = ({ isLogin }) => {
+  const { isOpen, setIsOpen } = useContext(createPlaylistModalContext) // for playlist modal
   const sidebarRef = useRef(null)
   const [isResizing, setIsResizing] = useState(false)
   const [sidebarWidth, setSidebarWidth] = useState(260)
@@ -62,12 +63,17 @@ const Sidebar = ({ isLogin }) => {
         </div>
         <div className="flex flex-col w-full mt-8 pb-5">
           <MenuTitle title={'Home'} icon={<GoHome />} target={''} />
-          <MenuTitle title={'Search'} icon={<CiSearch />} target={''} />
+          <MenuTitle title={'Search'} icon={<CiSearch />} target={'/search'} />
           <MenuTitle title={'Your Library'} icon={<LuLibrary />} target={''} />
         </div>
 
         <div className="w-full flex flex-col mt-6 ">
-          <NavLink>
+          <NavLink
+            onClick={() => {
+              console.log(isOpen)
+              setIsOpen(!isOpen)
+            }}
+          >
             <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
               <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
                 <CiSquarePlus className=" rounded-lg mx-2 text-3xl" />
