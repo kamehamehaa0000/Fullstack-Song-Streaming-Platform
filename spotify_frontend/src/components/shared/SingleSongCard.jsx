@@ -21,7 +21,7 @@ const SingleSongCard = ({
   )
   return (
     <div
-      className={` text-white w-full h-16 min-w-[260px]  max-w-[350px]  bg-zinc-800 p-2 rounded-lg flex `}
+      className={` text-white w-full h-16 min-w-[260px] hover:bg-zinc-900  max-w-[370px]  bg-zinc-800 p-2 rounded-lg flex `}
     >
       <div
         onClick={() => {
@@ -46,23 +46,22 @@ const SingleSongCard = ({
         <button>
           <HiDotsVertical />
         </button>
-        <div className="absolute z-30 top-0 left-2 w-max p-2 hidden group-hover:flex opacity-80 ">
-          <div className="flex flex-col rounded-lg overflow-hidden bg-zinc-700 border-[2px]">
+        <div className="absolute text-zinc-400 z-30 top-0 left-2 w-max p-2 hidden rounded-lg group-hover:flex border-zinc-700 bg-zinc-900 opacity-100 ">
+          <div className="flex flex-col w-full  overflow-hidden  ">
             <button
               onClick={() => {
                 setCurrentSong(() => info)
               }}
-              className="text-sm w-200px p-2  "
+              className="text-sm border-b-[1px] hover:text-white w-200px p-2 border-zinc-700 "
             >
               Play
             </button>
-            <div className="h-[3px] w-full bg-white"></div>
             <button
               onClick={() => {
                 setQueue((prev) => [...prev, info])
                 console.log(queue)
               }}
-              className="text-sm w-200px p-2  "
+              className="text-sm w-200px p-2 hover:text-white  border-b-[1px] border-zinc-700"
             >
               Add To Queue
             </button>
@@ -71,7 +70,7 @@ const SingleSongCard = ({
                 setIsOpenPlaylist(true)
                 setCrntSongId(info._id)
               }}
-              className="text-sm w-200px p-2  "
+              className="text-sm w-200px p-2 hover:text-white   border-b-[1px] border-zinc-700 "
             >
               Add To Playlist
             </button>

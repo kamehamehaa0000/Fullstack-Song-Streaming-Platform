@@ -61,55 +61,53 @@ const Sidebar = ({ isLogin }) => {
             Spotify
           </h1>
         </div>
-        <div className="flex flex-col w-full mt-8 pb-5">
+        <div className="flex flex-col w-full mt-10 pb-5">
           <MenuTitle title={'Home'} icon={<GoHome />} target={''} />
           <MenuTitle title={'Search'} icon={<CiSearch />} target={'/search'} />
-          <MenuTitle
-            title={'Your Library'}
-            icon={<LuLibrary />}
-            target={'/myplaylists'}
-          />
-        </div>
-
-        <div className="w-full flex flex-col mt-6 ">
-          <NavLink
-            onClick={() => {
-              console.log(isOpen)
-              setIsOpen(!isOpen)
-            }}
-          >
-            <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
-              <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
-                <CiSquarePlus className=" rounded-lg mx-2 text-3xl" />
-                <h1 className=" text-md font-medium">Create Playlist</h1>
-              </div>
-            </div>
-          </NavLink>
-
-          <NavLink>
-            <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
-              <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
-                <FaHeart className="h-7 w-7 bg-gradient-to-br from-green-900 to-slate-50  dark:from-violet-900 dark:to-slate-50 text-white rounded-sm p-[4px] mx-2 text-2xl" />
-                <h1 className=" text-md font-medium">Liked Songs</h1>
-              </div>
-            </div>
-          </NavLink>
         </div>
         {isLogin ? (
-          <div className="w-full flex flex-col mt-6 ">
-            <NavLink to={'/addsong'}>
+          <div className="w-full flex flex-col mt-4 ">
+            <NavLink>
               <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
                 <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
-                  <CiSquarePlus className=" rounded-lg mx-2 text-3xl" />
-                  <h1 className=" text-md font-medium">Add a Song</h1>
+                  <FaHeart className="h-7 w-7 bg-gradient-to-br from-green-900 to-slate-50  dark:from-violet-900 dark:to-slate-50 text-white rounded-sm p-[4px] mx-2 text-2xl" />
+                  <h1 className=" text-md font-medium">Liked Songs</h1>
                 </div>
               </div>
             </NavLink>
+            <MenuTitle
+              title={'Your Library'}
+              icon={<LuLibrary />}
+              target={'/myplaylists'}
+            />
+
             <NavLink to={'/mysongs'}>
               <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
                 <div className="w-full h-full flex items-center rounded-lg  dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
                   <LuListMusic className="h-7 w-7  rounded-sm p-[4px] mx-2 text-2xl" />
                   <h1 className=" text-md font-medium">My Songs</h1>
+                </div>
+              </div>
+            </NavLink>
+            <NavLink
+              onClick={() => {
+                console.log(isOpen)
+                setIsOpen(!isOpen)
+              }}
+            >
+              <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
+                <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
+                  <CiSquarePlus className=" rounded-lg mx-2 text-3xl" />
+                  <h1 className=" text-md font-medium">Create Playlist</h1>
+                </div>
+              </div>
+            </NavLink>
+
+            <NavLink to={'/addsong'}>
+              <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
+                <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
+                  <CiSquarePlus className=" rounded-lg mx-2 text-3xl" />
+                  <h1 className=" text-md font-medium">Add a Song</h1>
                 </div>
               </div>
             </NavLink>
@@ -120,12 +118,8 @@ const Sidebar = ({ isLogin }) => {
 
         <div className="flex-1 "></div>
         <div className="w-full h-28 bottom-12 select-none ml-1">
-          <div className="w-fit rounded-full text-sm px-3 py-1 flex items-center gap-1 border-2 border-white hover:bg-white hover:text-black">
-            <IoIosGlobe className="text-2xl" />
-            English
-          </div>
           <h1 className=" my-3 text-sm">
-            Clone by{' '}
+            Made by{' '}
             <a
               href="Https://www.github.com/kamehamehaa0000"
               target="_blank"

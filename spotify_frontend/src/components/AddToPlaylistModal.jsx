@@ -54,7 +54,7 @@ const AddToPlaylistModal = ({ token }) => {
       if (res.success) {
         toast.success('Song Added to playlist Successfully')
       } else {
-        toast.error('Song Not Added')
+        toast.error(res.data.error)
       }
     } catch (error) {
       toast.error('Failed to add song to playlist')
@@ -109,7 +109,7 @@ const AddToPlaylistModal = ({ token }) => {
           </div>
         </div>
       )}
-      <ToastContainer autoClose={800} />
+      <ToastContainer theme="dark" autoClose={800} />
     </div>
   )
 }

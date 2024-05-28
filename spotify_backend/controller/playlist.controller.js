@@ -35,7 +35,7 @@ const createPlaylist = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, playlist))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 
@@ -50,7 +50,7 @@ const getPlaylistByID = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, playlist))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 
@@ -70,7 +70,7 @@ const getPlaylistByArtist = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, { data: playlists }))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 const getPlaylistByUser = asyncHandler(async (req, res) => {
@@ -95,24 +95,26 @@ const getPlaylistByUser = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, { data: playlists }))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 const addSong = asyncHandler(async (req, res) => {
   try {
     const { songID, playlistID } = req.body
     const currentUser = req.user
+
     const playlist = await Playlist.findOne({ _id: playlistID }).populate(
       'songs'
     )
-    console.log(playlist)
     if (!playlist) {
       throw new ApiError(404, 'Playlist Not Found.')
     }
 
     if (
       playlist.owner.toString() !== currentUser._id.toString() &&
-      !playlist.collaborators.includes(currentUser._id)
+      !playlist.collaborators.some(
+        (collab) => collab.toString() === currentUser._id.toString()
+      )
     ) {
       throw new ApiError(
         403,
@@ -121,22 +123,24 @@ const addSong = asyncHandler(async (req, res) => {
     }
 
     const song = await Song.findOne({ _id: songID })
-
     if (!song) {
       throw new ApiError(404, 'Song does not exist or found')
     }
 
-    // Check if the song is already in the playlist
-    if (playlist.songs.includes(songID)) {
+    if (
+      playlist.songs.some(
+        (existingSong) => existingSong._id.toString() === song._id.toString()
+      )
+    ) {
       throw new ApiError(400, 'Song is already in the playlist')
     }
 
-    playlist.songs.push(songID)
+    playlist.songs.push(song._id)
     await playlist.save()
 
     return res.status(200).json(new ApiResponse(200, playlist))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 
@@ -150,7 +154,7 @@ const getAllPlaylist = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, playlist))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 
@@ -185,7 +189,7 @@ const removeSong = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, playlist))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 
@@ -220,7 +224,7 @@ const updatePlaylist = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, playlist))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 
@@ -250,7 +254,7 @@ const deletePlaylist = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, 'Playlist deleted successfully'))
   } catch (error) {
-    return res.status(500).json(new ApiResponse(500, { error }))
+    return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }
 })
 

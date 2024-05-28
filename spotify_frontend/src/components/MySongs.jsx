@@ -20,21 +20,22 @@ const MySongs = () => {
   }, [])
 
   return (
-    <div className="w-full min-h-[100vh] p-20 flex flex-grow flex-wrap gap-3 dark:text-white ">
+    <div className="w-full min-h-[100vh] py-20 px-4 flex flex-grow flex-wrap gap-3 dark:text-white ">
       <div>
         <h1 className="text-2xl font-semibold p-6 ">My Songs</h1>{' '}
-        <div className="w-full h-fit flex flex-grow flex-wrap gap-3 p-4  justify-start">
+        <div className="w-full h-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-5    gap-3 p-4  justify-start">
           {songData.map((song, index) => {
             return (
-              <SingleSongCard
-                track={song.track}
-                songTitle={song.name}
-                thumbnail={song.thumbnail}
-                artist={song.artist.username}
-                duration={song.duration}
-                key={index}
-                info={song}
-              />
+              <div className="col-span-1" key={index}>
+                <SingleSongCard
+                  track={song.track}
+                  songTitle={song.name}
+                  thumbnail={song.thumbnail}
+                  artist={song.artist.username}
+                  duration={song.duration}
+                  info={song}
+                />
+              </div>
             )
           })}
         </div>
