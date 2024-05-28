@@ -109,25 +109,28 @@ const addSong = asyncHandler(async (req, res) => {
     if (!playlist) {
       throw new ApiError(404, 'Playlist Not Found.')
     }
-    //check if current user is a owner or collaborator of playlist
 
     if (
-      playlist.owner !== currentUser._id &&
-      playlist.collaborators.includes(currentUser._id)
+      playlist.owner.toString() !== currentUser._id.toString() &&
+      !playlist.collaborators.includes(currentUser._id)
     ) {
       throw new ApiError(
-        402,
-        'You are not a owner or collaborator of the playlist'
+        403,
+        'You are not the owner or a collaborator of the playlist'
       )
     }
 
-    //check if song is valid or not
     const song = await Song.findOne({ _id: songID })
 
     if (!song) {
       throw new ApiError(404, 'Song does not exist or found')
     }
-    //adding song
+
+    // Check if the song is already in the playlist
+    if (playlist.songs.includes(songID)) {
+      throw new ApiError(400, 'Song is already in the playlist')
+    }
+
     playlist.songs.push(songID)
     await playlist.save()
 
@@ -136,6 +139,7 @@ const addSong = asyncHandler(async (req, res) => {
     return res.status(500).json(new ApiResponse(500, { error }))
   }
 })
+
 const getAllPlaylist = asyncHandler(async (req, res) => {
   try {
     const playlist = await Playlist.find()
@@ -150,8 +154,111 @@ const getAllPlaylist = asyncHandler(async (req, res) => {
   }
 })
 
+const removeSong = asyncHandler(async (req, res) => {
+  try {
+    const { songID, playlistID } = req.body
+    const currentUser = req.user
+    const playlist = await Playlist.findOne({ _id: playlistID }).populate(
+      'songs'
+    )
+    if (!playlist) {
+      throw new ApiError(404, 'Playlist Not Found.')
+    }
+
+    if (
+      playlist.owner.toString() !== currentUser._id.toString() &&
+      !playlist.collaborators.includes(currentUser._id)
+    ) {
+      throw new ApiError(
+        403,
+        'You are not the owner or a collaborator of the playlist'
+      )
+    }
+
+    const songIndex = playlist.songs.indexOf(songID)
+    if (songIndex > -1) {
+      playlist.songs.splice(songIndex, 1)
+      await playlist.save()
+    } else {
+      throw new ApiError(404, 'Song not found in the playlist')
+    }
+
+    return res.status(200).json(new ApiResponse(200, playlist))
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, { error }))
+  }
+})
+
+const updatePlaylist = asyncHandler(async (req, res) => {
+  try {
+    const { playlistID } = req.params
+    const { name, description } = req.body
+    const currentUser = req.user
+
+    const playlist = await Playlist.findOne({ _id: playlistID })
+    if (!playlist) {
+      throw new ApiError(404, 'Playlist Not Found.')
+    }
+
+    if (
+      playlist.owner.toString() !== currentUser._id.toString() &&
+      !playlist.collaborators.includes(currentUser._id)
+    ) {
+      throw new ApiError(
+        403,
+        'You are not the owner or a collaborator of the playlist'
+      )
+    }
+
+    if (name) {
+      playlist.name = name
+    }
+    if (description) {
+      playlist.description = description
+    }
+    await playlist.save()
+
+    return res.status(200).json(new ApiResponse(200, playlist))
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, { error }))
+  }
+})
+
+const deletePlaylist = asyncHandler(async (req, res) => {
+  try {
+    const { playlistID } = req.params
+    const currentUser = req.user
+
+    const playlist = await Playlist.findOne({ _id: playlistID })
+    if (!playlist) {
+      throw new ApiError(404, 'Playlist Not Found.')
+    }
+
+    if (
+      playlist.owner.toString() !== currentUser._id.toString() &&
+      !playlist.collaborators.includes(currentUser._id)
+    ) {
+      throw new ApiError(
+        403,
+        'You are not the owner or a collaborator of the playlist'
+      )
+    }
+
+    await Playlist.deleteOne({ _id: playlistID })
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, 'Playlist deleted successfully'))
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, { error }))
+  }
+})
+
 export {
   addSong,
+  removeSong,
+  updatePlaylist,
+  deletePlaylist,
   getPlaylistByArtist,
   getPlaylistByID,
   getPlaylistByUser,
