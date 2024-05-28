@@ -64,7 +64,11 @@ const Sidebar = ({ isLogin }) => {
         <div className="flex flex-col w-full mt-8 pb-5">
           <MenuTitle title={'Home'} icon={<GoHome />} target={''} />
           <MenuTitle title={'Search'} icon={<CiSearch />} target={'/search'} />
-          <MenuTitle title={'Your Library'} icon={<LuLibrary />} target={''} />
+          <MenuTitle
+            title={'Your Library'}
+            icon={<LuLibrary />}
+            target={'/myplaylists'}
+          />
         </div>
 
         <div className="w-full flex flex-col mt-6 ">

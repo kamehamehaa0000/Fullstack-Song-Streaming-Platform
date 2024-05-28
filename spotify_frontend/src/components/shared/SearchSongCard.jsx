@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { IoPlay } from 'react-icons/io5'
+import { ToastContainer, toast } from 'react-toastify'
 import { HiDotsVertical } from 'react-icons/hi'
 import PlayerContext from '../contexts/songContext.js'
 import queueContext from '../contexts/queueContext.js'
+import addToPlaylistModalContext from '../contexts/addToPlaylistModalContext.js'
 const searchSongCard = ({
   songTitle = 'Title of the song',
   artist = '',
@@ -17,6 +19,9 @@ const searchSongCard = ({
   duration = `${minutes}:${seconds.toString().padStart(2, '0')}`
   const { currentSong, setCurrentSong } = useContext(PlayerContext)
   const { queue, setQueue } = useContext(queueContext)
+  const { isOpenPlaylist, setIsOpenPlaylist, setCrntSongId } = useContext(
+    addToPlaylistModalContext
+  )
   return (
     <div
       className={`hover:scale-110 text-white flex-col max-w-[100px]  bg-zinc-800 p-2 rounded-lg flex `}
@@ -67,6 +72,15 @@ const searchSongCard = ({
                   className="text-sm font-normal  p-1  "
                 >
                   Add To Queue
+                </button>
+                <button
+                  onClick={() => {
+                    setIsOpenPlaylist(true)
+                    setCrntSongId(info._id)
+                  }}
+                  className="text-sm font-normal  p-1  "
+                >
+                  Add To Playlist
                 </button>
               </div>
             </div>

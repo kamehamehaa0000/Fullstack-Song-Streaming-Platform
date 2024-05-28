@@ -5,7 +5,6 @@ import { Icon } from '@iconify/react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { makeUnauthenticatedPOSTrequest } from '../utils/apiCall.js'
 import { useCookies } from 'react-cookie'
-import { stringify } from 'postcss'
 const SignUp = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')

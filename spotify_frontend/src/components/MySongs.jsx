@@ -1,15 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SingleSongCard from './shared/SingleSongCard'
 import { makeAuthenticatedGETrequest } from '../utils/apiCall'
 import { useCookies } from 'react-cookie'
-import { Howl, Howler } from 'howler'
-import PlayerContext from './contexts/songContext'
 
 const MySongs = () => {
   const [cookie, setCookie] = useCookies(['authToken'])
   const token = cookie.authToken
   const [songData, setSongData] = useState([])
-  const contextPlayer = useContext(PlayerContext)
 
   useEffect(() => {
     const getData = async () => {
@@ -17,7 +14,6 @@ const MySongs = () => {
         '/songs/get/mysongs',
         token
       )
-      console.log(recievedData)
       setSongData(recievedData.data.data)
     }
     getData()

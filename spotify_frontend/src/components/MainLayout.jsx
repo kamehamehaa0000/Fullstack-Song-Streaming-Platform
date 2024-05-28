@@ -16,15 +16,15 @@ const MainLayout = ({ children }) => {
             userDets={cookie.details}
           />
           <main className="h-[92%]">{children}</main>{' '}
-          {cookie.authToken ? (
-            <div className="w-full h-[8%] min-h-[80px]  fixed bottom-0 ">
-              <Player />
-            </div>
-          ) : (
-            ''
-          )}
         </div>
-      </div>{' '}
+        {cookie.authToken ? (
+          <div className="w-full z-[100] h-[8%] min-h-[80px] fixed bottom-0  ">
+            <Player />
+          </div>
+        ) : (
+          ''
+        )}
+      </div>
     </div>
   )
 }

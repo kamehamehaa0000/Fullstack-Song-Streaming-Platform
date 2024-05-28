@@ -21,7 +21,7 @@ export const makeAuthenticatedPOSTrequest = async (route, data, token) => {
       'content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(data),
   })
   const formattedResponse = await response.json()
   return formattedResponse

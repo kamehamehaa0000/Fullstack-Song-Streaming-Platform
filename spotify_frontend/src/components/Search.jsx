@@ -65,7 +65,7 @@ const Search = ({ token }) => {
         </div>
       </div>
       <div className="p-10 bg-black rounded-xl mx-10 text-white">
-        <h1 className="my-5 text-xl ">Your search result :</h1>
+        <h1 className="my-5 text-xl border-b-[1px]">Your search result :</h1>
         <div className="flex flex-wrap gap-7 ">
           {searchResult && searchResult.length > 0 ? (
             searchResult.map((song, index) => {
@@ -84,8 +84,7 @@ const Search = ({ token }) => {
             })
           ) : (
             <div className=" flex items-center justify-center">
-              <TbError404 className="text-7xl m-2" />
-              <h1 className="text-2xl border-b-2">No matching songs found</h1>
+              <h1 className="text-lg">No matching songs found</h1>
             </div>
           )}
         </div>

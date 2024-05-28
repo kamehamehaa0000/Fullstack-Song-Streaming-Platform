@@ -3,20 +3,22 @@ import { IoPlay } from 'react-icons/io5'
 import { HiDotsVertical } from 'react-icons/hi'
 import PlayerContext from '../contexts/songContext.js'
 import queueContext from '../contexts/queueContext.js'
+import addToPlaylistModalContext from '../contexts/addToPlaylistModalContext.js'
 const SingleSongCard = ({
   songTitle = 'Title of the song',
   artist = '',
-  track,
   duration = '_:_',
   thumbnail = 'https://images.genius.com/3c84341c543bd17134c0d4e15b3a26db.1000x1000x1.jpg',
   info,
-  duringSearch = false,
 }) => {
   const minutes = Math.floor(duration / 60)
   const seconds = Math.floor(duration % 60)
   duration = `${minutes}:${seconds.toString().padStart(2, '0')}`
   const { currentSong, setCurrentSong } = useContext(PlayerContext)
   const { queue, setQueue } = useContext(queueContext)
+  const { isOpenPlaylist, setIsOpenPlaylist, setCrntSongId } = useContext(
+    addToPlaylistModalContext
+  )
   return (
     <div
       className={` text-white w-full h-16 min-w-[260px]  max-w-[350px]  bg-zinc-800 p-2 rounded-lg flex `}
@@ -63,6 +65,15 @@ const SingleSongCard = ({
               className="text-sm w-200px p-2  "
             >
               Add To Queue
+            </button>
+            <button
+              onClick={() => {
+                setIsOpenPlaylist(true)
+                setCrntSongId(info._id)
+              }}
+              className="text-sm w-200px p-2  "
+            >
+              Add To Playlist
             </button>
           </div>
         </div>

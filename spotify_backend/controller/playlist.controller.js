@@ -9,7 +9,8 @@ const createPlaylist = asyncHandler(async (req, res) => {
   try {
     const currentUser = req.user
     const thumbnail = req.file.path
-    const { name } = req.body
+    const { name, description } = req.body
+
     let thumbnailUrl = await uploadOnCloudinary(thumbnail).catch((error) => {
       console.log(error)
     })
@@ -21,6 +22,7 @@ const createPlaylist = asyncHandler(async (req, res) => {
       name,
       thumbnail: thumbnailUrl.url,
       songs: [],
+      description,
       owner: currentUser._id,
       collaborators: [],
     }
@@ -71,16 +73,44 @@ const getPlaylistByArtist = asyncHandler(async (req, res) => {
     return res.status(500).json(new ApiResponse(500, { error }))
   }
 })
+const getPlaylistByUser = asyncHandler(async (req, res) => {
+  try {
+    const userID = req.user._id
+    const user = await User.findById(userID)
+    console.log(user)
+    if (!user) {
+      console.log('user detail nhi mili')
+      throw new ApiError(401, 'Invalid artist ')
+    }
 
+    const playlists = await Playlist.find({ owner: user._id }).populate('songs')
+
+    if (!playlists) {
+      if (playlists === null) {
+        throw new ApiError(404, 'Playlist Not Found.')
+      } else if (playlists.length === 0) {
+        throw new ApiError(404, 'Playlist Not Created by user')
+      }
+    }
+
+    return res.status(200).json(new ApiResponse(200, { data: playlists }))
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, { error }))
+  }
+})
 const addSong = asyncHandler(async (req, res) => {
   try {
     const { songID, playlistID } = req.body
     const currentUser = req.user
-    const playlist = await Playlist.findOne({ _id: playlistID })
+    const playlist = await Playlist.findOne({ _id: playlistID }).populate(
+      'songs'
+    )
+    console.log(playlist)
     if (!playlist) {
       throw new ApiError(404, 'Playlist Not Found.')
     }
     //check if current user is a owner or collaborator of playlist
+
     if (
       playlist.owner !== currentUser._id &&
       playlist.collaborators.includes(currentUser._id)
@@ -93,6 +123,7 @@ const addSong = asyncHandler(async (req, res) => {
 
     //check if song is valid or not
     const song = await Song.findOne({ _id: songID })
+
     if (!song) {
       throw new ApiError(404, 'Song does not exist or found')
     }
@@ -105,5 +136,27 @@ const addSong = asyncHandler(async (req, res) => {
     return res.status(500).json(new ApiResponse(500, { error }))
   }
 })
+const getAllPlaylist = asyncHandler(async (req, res) => {
+  try {
+    const playlist = await Playlist.find()
 
-export { addSong, getPlaylistByArtist, getPlaylistByID, createPlaylist }
+    if (!playlist) {
+      throw new ApiError(404, 'Playlists not found')
+    }
+
+    return res.status(200).json(new ApiResponse(200, playlist))
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, { error }))
+  }
+})
+
+export {
+  addSong,
+  getPlaylistByArtist,
+  getPlaylistByID,
+  getPlaylistByUser,
+  createPlaylist,
+  getAllPlaylist,
+}
+//remove from playlist
+// update playlist [ name and discription]

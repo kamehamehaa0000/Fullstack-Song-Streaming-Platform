@@ -9,6 +9,9 @@ import { LuRepeat1 } from 'react-icons/lu'
 import { Howl, Howler } from 'howler'
 import songContext from '../contexts/songContext.js'
 import queueContext from '../contexts/queueContext.js'
+import { TbPlaylistAdd } from 'react-icons/tb'
+import { IoVolumeMute } from 'react-icons/io5'
+import addToPlaylistModalContext from '../contexts/addToPlaylistModalContext.js'
 const Player = () => {
   const {
     currentSong,
@@ -18,7 +21,9 @@ const Player = () => {
     isPlaying,
     setIsPlaying,
   } = useContext(songContext)
-
+  const { isOpenPlaylist, setIsOpenPlaylist } = useContext(
+    addToPlaylistModalContext
+  )
   const [repeatOnce, setRepeatOnce] = useState(false)
   const { queue, setQueue } = useContext(queueContext)
   const [volume, setVolume] = useState(0.5)
@@ -109,10 +114,10 @@ const Player = () => {
     <div
       className={`${
         currentSong ? 'flex' : 'hidden'
-      } w-full px-5 py-1 h-full items-center flex gap-10 text-white bg-black`}
+      } w-full  px-5 py-1 h-full items-center grid grid-cols-3 gap-10 text-white bg-black`}
     >
-      <div className="flex min-w-[200px]">
-        <div className="flex relative group items-center ">
+      <div className="col-span-1 flex min-w-[200px]">
+        <div className="flex relative  items-center ">
           <img
             src={
               currentSong.thumbnail ||
@@ -120,10 +125,6 @@ const Player = () => {
             }
             alt=""
             className="w-[50px] h-[50px] max-w-[50px] max-h-[50px] rounded-lg"
-          />
-          <img
-            src="https://i.pinimg.com/originals/a5/5a/68/a55a685b8375807667122027d72de120.gif"
-            className="hidden h-fit m-w-[50px] rounded-lg group-hover:block absolute top-0 left-0 bg-white opacity-70 "
           />
         </div>
         <div className="">
@@ -135,7 +136,7 @@ const Player = () => {
           </p>
         </div>
       </div>
-      <div className="flex flex-col justify-center items-center w-3/5 ">
+      <div className="col-span-1">
         <div className="flex items-center text-xl gap-5">
           <button onClick={playPreviousSong}>
             <TbPlayerSkipBackFilled />
@@ -159,7 +160,15 @@ const Player = () => {
           </button>
         </div>
       </div>
-      <div className="min-w-[100px] flex items-center ">
+      <div className="min-w-[100px] col-span-1 flex items-center ">
+        <button
+          onClick={() => {
+            setIsOpenPlaylist(true)
+          }}
+        >
+          <TbPlaylistAdd className="text-3xl mx-3" />
+        </button>
+
         <input
           type="range"
           min="0"
@@ -168,6 +177,13 @@ const Player = () => {
           value={volume}
           onChange={handleVolumeChange}
         />
+        <button
+          onClick={() => {
+            setVolume(0)
+          }}
+        >
+          <IoVolumeMute className="text-2xl mx-3" />
+        </button>
       </div>
     </div>
   )

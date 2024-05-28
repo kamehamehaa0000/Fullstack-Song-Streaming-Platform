@@ -9,6 +9,7 @@ const playlistSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    description: { type: String, required: true },
     songs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Song' }],
     collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },

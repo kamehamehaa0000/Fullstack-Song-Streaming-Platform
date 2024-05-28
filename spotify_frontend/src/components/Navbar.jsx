@@ -46,7 +46,7 @@ const Navbar = ({ isLogin, userDets }) => {
             </button>
           </NavLink>
           <NavLink to={'/login'}>
-            <button className="relative mx-auto my-4  px-4 py-2 rounded-full bg-black isolation-auto z-10 border-2 border-neutral-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-indigo-500 text-white before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 ">
+            <button className="relative mx-auto my-4  px-4 py-1 rounded-full bg-black isolation-auto z-10 border-2 border-neutral-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-violet-500 text-white before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 ">
               Login
             </button>
           </NavLink>{' '}

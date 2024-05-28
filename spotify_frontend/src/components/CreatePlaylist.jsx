@@ -8,6 +8,8 @@ dotStream.register()
 const CreatePlaylist = ({ token }) => {
   const { isOpen, setIsOpen } = useContext(createPlaylistModalContext)
   const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+
   const [thumbnail, setThumbnail] = useState(null)
   const [loading, setLoading] = useState(false)
   const ApiURL = import.meta.env.VITE_APIURL
@@ -21,7 +23,8 @@ const CreatePlaylist = ({ token }) => {
     const formData = new FormData()
     formData.append('name', name)
     formData.append('thumbnail', thumbnail)
-    formData.append('songs', []) // Are you sure 'songs' should be appended as an empty array?
+    formData.append('songs', [])
+    formData.append('description', description)
 
     try {
       const response = await axios.post(`${ApiURL}/playlist/create`, formData, {
@@ -60,13 +63,21 @@ const CreatePlaylist = ({ token }) => {
           ></div>
           <div className="relative z-10">
             <div className="max-w-md mt-16 p-10 dark:border-2 bg-white dark:bg-zinc-950 shadow-2xl rounded-2xl overflow-hidden border-4 border-white">
-              <h1 className="text-white px-2">Name of the Playlist - </h1>
+              <h1 className="text-white px-2">Name & Description - </h1>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 name="name"
                 placeholder="Playlist Name"
+                className="block m-2 w-full rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800 text-black"
+              />
+              <input
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                name="description"
+                placeholder="Playlist Desciption"
                 className="block m-2 w-full rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800 text-black"
               />
               <h1 className="text-white px-2">Thumbnail - </h1>
