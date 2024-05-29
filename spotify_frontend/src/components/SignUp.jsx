@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { makeUnauthenticatedPOSTrequest } from '../utils/apiCall.js'
 import { useCookies } from 'react-cookie'
+import { toast } from 'react-toastify'
 const SignUp = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
@@ -57,16 +58,15 @@ const SignUp = () => {
             expires: expirationDate,
           })
 
-          alert('Successfully Registered , Proceed to Login')
+          toast.success('Successfully Registered , Proceed to Login')
           clearAllInputs()
           navigate('/home')
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.message)
+          toast.error(error.response.data.message)
         } else {
           console.error('Unexpected error during registeration:', error)
-          // Handle unexpected error in UI or perform other actions
         }
       }
     } else {

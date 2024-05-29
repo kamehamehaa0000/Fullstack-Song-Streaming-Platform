@@ -3,6 +3,7 @@ import createPlaylistModalContext from './contexts/createPlaylistModal'
 import { makeAuthenticatedPOSTrequest } from '../utils/apiCall'
 import axios from 'axios'
 import { dotStream } from 'ldrs'
+import { toast } from 'react-toastify'
 dotStream.register()
 
 const CreatePlaylist = ({ token }) => {
@@ -16,7 +17,7 @@ const CreatePlaylist = ({ token }) => {
 
   const createPlaylist = async () => {
     if (!name || !thumbnail) {
-      alert('Please fill all fields.')
+      toast.error('Please fill all fields.')
       return
     }
     setLoading(true)
@@ -33,14 +34,14 @@ const CreatePlaylist = ({ token }) => {
           Authorization: 'Bearer ' + token,
         },
       })
-      console.log(response)
-      alert('Playlist Successfully Created !')
+      toast.success('Playlist Successfully Created !')
       setLoading(false)
       setName('')
       setThumbnail(null)
       setIsOpen(false)
     } catch (error) {
       // Log any errors
+      toast.error(`Error creating playlist - ${error}`)
       console.error('Error creating playlist:', error)
       setLoading(false)
       // Set an error state or handle the error in UI

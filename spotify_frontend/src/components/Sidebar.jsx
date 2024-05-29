@@ -68,7 +68,12 @@ const Sidebar = ({ isLogin }) => {
         {isLogin ? (
           <div className="w-full flex flex-col mt-4 ">
             <NavLink>
-              <div className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black">
+              <div
+                onClick={() => {
+                  alert('This Feature is currently in development.')
+                }}
+                className=" ml-3 h-10 mt-2  rounded-lg  dark:bg-black"
+              >
                 <div className="w-full h-full flex items-center rounded-lg dark:hover:bg-white dark:hover:text-black hover:bg-green-600">
                   <FaHeart className="h-7 w-7 bg-gradient-to-br from-green-900 to-slate-50  dark:from-violet-900 dark:to-slate-50 text-white rounded-sm p-[4px] mx-2 text-2xl" />
                   <h1 className=" text-md font-medium">Liked Songs</h1>

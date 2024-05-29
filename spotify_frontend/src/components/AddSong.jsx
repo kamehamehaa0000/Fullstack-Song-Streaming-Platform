@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-
 import { dotStream } from 'ldrs'
+import { toast } from 'react-toastify'
 
 dotStream.register()
 
@@ -30,7 +30,7 @@ const AddSong = ({ token }) => {
         .then((res) => {
           setSongRecieved(res?.data?.data?.createdSong?.track)
           setLoading(false)
-          alert('Song successfully uploaded')
+          toast.success('Song successfully uploaded')
           setSongName('')
           setMp3File('')
           setImageFile('')
@@ -42,7 +42,7 @@ const AddSong = ({ token }) => {
     } catch (error) {
       console.log(error)
       setLoading(false)
-      alert(error?.response?.data?.data.error)
+      toast.error(error?.response?.data?.data.error)
       setSongName('')
       setMp3File('')
       setImageFile('')

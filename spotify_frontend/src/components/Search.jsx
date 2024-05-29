@@ -33,8 +33,8 @@ const Search = ({ token }) => {
 
   return (
     <>
-      <div className="flex items-center justify-start py-20 px-10 text-white">
-        <div className="w-2/4 rounded-xl border-2 outline-none">
+      <div className="flex items-center justify-start pt-20 px-10 text-white">
+        <div className="w-3/4 rounded-xl border-2 outline-none">
           <div className="flex">
             <div className="flex w-10 items-center justify-center rounded-tl-lg rounded-bl-lg border-r border-gray-200  p-5">
               <svg
@@ -64,8 +64,8 @@ const Search = ({ token }) => {
           </div>
         </div>
       </div>
-      <div className="p-10 bg-black rounded-xl mx-10 text-white">
-        <h1 className="my-5 text-xl border-b-[1px]">Your search result :</h1>
+      <div className=" bg-black rounded-xl mx-10 text-white">
+        <h1 className="my-5 text-xl ">Your search result :</h1>
         <div className="flex flex-wrap gap-7 ">
           {searchResult && searchResult.length > 0 ? (
             searchResult.map((song, index) => {

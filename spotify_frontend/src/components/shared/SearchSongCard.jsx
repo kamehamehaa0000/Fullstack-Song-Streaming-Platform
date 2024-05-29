@@ -23,14 +23,14 @@ const searchSongCard = ({
   )
   return (
     <div
-      className={`hover:scale-110 text-white flex-col max-w-[100px]  bg-zinc-800 p-2 rounded-lg flex `}
+      className={`hover:scale-110 text-white flex-col max-w-[140px]  bg-zinc-800 p-2 rounded-lg flex `}
     >
       <div
         onClick={() => {
           setCurrentSong(() => info)
           console.log(currentSong)
         }}
-        className="w-full relative group h-[80px] mb-2 rounded-lg mr-3 overflow-hidden"
+        className="w-full relative group h-[100px] mb-2 rounded-lg mr-3 overflow-hidden"
       >
         <img src={thumbnail} alt="" className="object-cover object-center" />
         <div className="hidden  bg-black opacity-50 w-full h-full group-hover:flex items-center justify-center absolute top-0 rounded-lg">

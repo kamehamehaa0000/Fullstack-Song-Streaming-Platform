@@ -4,6 +4,7 @@ import TextInput from './shared/TextInput'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { makeUnauthenticatedPOSTrequest } from '../utils/apiCall'
 import { useCookies } from 'react-cookie'
+import { toast } from 'react-toastify'
 const Login = () => {
   const [cookie, setCookie, removeCookie] = useCookies(['authToken'])
   const [email, setEmail] = useState('')
@@ -33,12 +34,12 @@ const Login = () => {
           path: '/',
           expires: expirationDate,
         })
-        alert('Login Successfull!!')
+        toast.success('Login Successfull!!')
         navigate('/home')
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        alert(error.response.data.message)
+        toast.error(error.response.data.message)
       } else {
         console.error('Unexpected error during login:', error)
         // Handle unexpected error in UI or perform other actions

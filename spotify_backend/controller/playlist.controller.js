@@ -43,6 +43,16 @@ const getPlaylistByID = asyncHandler(async (req, res) => {
   try {
     const { playlistID } = req.params
     const playlist = await Playlist.findOne({ _id: playlistID })
+      .populate({
+        path: 'songs',
+        populate: {
+          path: 'artist',
+          select: ['username'],
+          model: 'User',
+        },
+      })
+      .populate('owner')
+      .populate('collaborators')
 
     if (!playlist) {
       throw new ApiError(404, 'Playlist not found')
@@ -62,7 +72,7 @@ const getPlaylistByArtist = asyncHandler(async (req, res) => {
       throw new ApiError(401, 'Invalid artist ')
     }
 
-    const playlists = await Playlist.find({ owner: artistID })
+    const playlists = await Playlist.find({ owner: artistID }).populate('songs')
 
     if (!playlists) {
       throw new ApiError(404, 'Playlist Not Found.')
@@ -161,11 +171,12 @@ const getAllPlaylist = asyncHandler(async (req, res) => {
 const removeSong = asyncHandler(async (req, res) => {
   try {
     const { songID, playlistID } = req.body
+    console.log(songID, playlistID)
+
     const currentUser = req.user
-    const playlist = await Playlist.findOne({ _id: playlistID }).populate(
-      'songs'
-    )
+    const playlist = await Playlist.findOne({ _id: playlistID })
     if (!playlist) {
+      console.log('playlist not found')
       throw new ApiError(404, 'Playlist Not Found.')
     }
 
@@ -179,15 +190,26 @@ const removeSong = asyncHandler(async (req, res) => {
       )
     }
 
-    const songIndex = playlist.songs.indexOf(songID)
+    // Convert songID to string to ensure correct comparison
+    const songIDStr = songID.toString()
+    const songIndex = playlist.songs.indexOf(songIDStr)
+    console.log(songIndex)
+
     if (songIndex > -1) {
       playlist.songs.splice(songIndex, 1)
       await playlist.save()
+
+      // Populate the songs and artist fields
+      await playlist.populate({
+        path: 'songs',
+        populate: { path: 'artist', select: ['username'] },
+      })
+
+      return res.status(200).json(new ApiResponse(200, playlist))
     } else {
+      console.log('song not found')
       throw new ApiError(404, 'Song not found in the playlist')
     }
-
-    return res.status(200).json(new ApiResponse(200, playlist))
   } catch (error) {
     return res.status(500).json(new ApiResponse(500, { error: error.message }))
   }

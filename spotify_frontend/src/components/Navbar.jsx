@@ -12,15 +12,20 @@ const Navbar = ({ isLogin, userDets }) => {
   }
   return (
     <div className=" absolute left-0 z-[2] top-0 flex items-center justify-end w-full h-16 dark:bg-black bg-[#22C55E]  ">
-      <div className="hidden sm:flex">
-        <HoverText text={'Premium'} />
-      </div>
-      <div className="hidden sm:flex">
+      <a
+        href="https://linkedin.com/in/aayush-gupta-b17758130/"
+        target="_blank"
+        className="hidden sm:flex"
+      >
         <HoverText text={'Support'} />
-      </div>
-      <div className="hidden sm:flex">
+      </a>
+      <a
+        href="https://github.com/kamehamehaa0000/Fullstack-Spotify-Clone"
+        target="_blank"
+        className="hidden sm:flex"
+      >
         <HoverText text={'Download'} />
-      </div>
+      </a>
       <span className="w-[2px] bg-white h-2/3" />
       {isLogin ? (
         <>

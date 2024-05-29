@@ -7,6 +7,7 @@ import {
   createPlaylist,
   getAllPlaylist,
   getPlaylistByUser,
+  removeSong,
 } from '../controller/playlist.controller.js'
 import { upload } from '../middlewares/multer.middleware.js'
 
@@ -31,7 +32,9 @@ router
 router
   .route('/add/song')
   .post(passport.authenticate('jwt', { session: false }), addSong)
-
+router
+  .route('/delete/song')
+  .post(passport.authenticate('jwt', { session: false }), removeSong)
 router.route('/getall').get(getAllPlaylist)
 router
   .route('/myplaylists')

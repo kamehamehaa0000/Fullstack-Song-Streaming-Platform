@@ -4,12 +4,18 @@ import { HiDotsVertical } from 'react-icons/hi'
 import PlayerContext from '../contexts/songContext.js'
 import queueContext from '../contexts/queueContext.js'
 import addToPlaylistModalContext from '../contexts/addToPlaylistModalContext.js'
+import { makeAuthenticatedPOSTrequest } from '../../utils/apiCall.js'
+import { toast } from 'react-toastify'
 const SingleSongCard = ({
   songTitle = 'Title of the song',
   artist = '',
   duration = '_:_',
   thumbnail = 'https://images.genius.com/3c84341c543bd17134c0d4e15b3a26db.1000x1000x1.jpg',
   info,
+  inPlaylist,
+  playlistID,
+  token,
+  refreshPlaylist,
 }) => {
   const minutes = Math.floor(duration / 60)
   const seconds = Math.floor(duration % 60)
@@ -19,9 +25,31 @@ const SingleSongCard = ({
   const { isOpenPlaylist, setIsOpenPlaylist, setCrntSongId } = useContext(
     addToPlaylistModalContext
   )
+  const removeFromPlaylist = async (songID, playlistID) => {
+    try {
+      const response = await makeAuthenticatedPOSTrequest(
+        '/playlist/delete/song',
+        {
+          songID,
+          playlistID,
+        },
+        token
+      )
+      console.log(response.data)
+      refreshPlaylist(response.data)
+      if (response.success) {
+        toast.success(
+          `song removed ${response.message} , reload if not showing in UI`
+        )
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
   return (
     <div
-      className={` text-white w-full h-16 min-w-[260px] hover:bg-zinc-900  max-w-[370px]  bg-zinc-800 p-2 rounded-lg flex `}
+      className={` opacity-80 text-white w-full h-16 min-w-[260px] hover:bg-zinc-900  md:max-w-[500px]   bg-zinc-800 p-2 rounded-lg flex `}
     >
       <div
         onClick={() => {
@@ -46,8 +74,8 @@ const SingleSongCard = ({
         <button>
           <HiDotsVertical />
         </button>
-        <div className="absolute text-zinc-400 z-30 top-0 left-2 w-max p-2 hidden rounded-lg group-hover:flex border-zinc-700 bg-zinc-900 opacity-100 ">
-          <div className="flex flex-col w-full  overflow-hidden  ">
+        <div className="absolute text-zinc-400 z-[234] top-0 -left-[800%] md:-left-[300%] w-max hidden rounded-lg group-hover:flex border-zinc-700 bg-zinc-900 opacity-100 ">
+          <div className="flex flex-col w-full text-right  overflow-hidden  ">
             <button
               onClick={() => {
                 setCurrentSong(() => info)
@@ -74,6 +102,16 @@ const SingleSongCard = ({
             >
               Add To Playlist
             </button>
+            {inPlaylist && (
+              <button
+                onClick={() => {
+                  removeFromPlaylist(info._id, playlistID)
+                }}
+                className="text-sm w-200px p-2 hover:text-white   border-b-[1px] border-zinc-700 "
+              >
+                Remove from Playlist
+              </button>
+            )}
           </div>
         </div>
       </span>

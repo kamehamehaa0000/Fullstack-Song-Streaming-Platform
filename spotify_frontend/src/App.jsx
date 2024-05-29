@@ -9,12 +9,13 @@ import MySongs from './components/MySongs.jsx'
 import songContext from './components/contexts/songContext.js'
 import queueContext from './components/contexts/queueContext.js'
 import createPlaylistModalContext from './components/contexts/createPlaylistModal.js'
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import Search from './components/Search.jsx'
 import CreatePlaylist from './components/CreatePlaylist.jsx'
 import YourLibrary from './components/YourLibrary.jsx'
 import addToPlaylistModalContext from './components/contexts/addToPlaylistModalContext.js'
 import AddToPlaylistModal from './components/AddToPlaylistModal.jsx'
+import Playlist from './components/Playlist.jsx'
 
 function App() {
   const [cookie, setCookie] = useCookies(['authToken'])
@@ -70,6 +71,10 @@ function App() {
                       <Route
                         path="/createplaylist"
                         element={<CreatePlaylist token={cookie.authToken} />}
+                      />
+                      <Route
+                        path="/playlist/:playlistID"
+                        element={<Playlist token={cookie.authToken} />}
                       />
                       <Route
                         path="/myplaylists"
