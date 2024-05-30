@@ -11,7 +11,12 @@ const Navbar = ({ isLogin, userDets }) => {
     removeCookie('authToken')
     removeCookie('details')
     setCurrentSong(null)
-    setSoundPlayed(null)
+    setSoundPlayed((sound) => {
+      if (sound) {
+        sound.pause() // Pause the song if it's playing
+      }
+      return null
+    })
     setIsPlaying(false)
   }
   return (
