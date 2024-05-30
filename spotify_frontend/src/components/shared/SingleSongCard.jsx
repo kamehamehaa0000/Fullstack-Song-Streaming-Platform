@@ -6,6 +6,7 @@ import queueContext from '../contexts/queueContext.js'
 import addToPlaylistModalContext from '../contexts/addToPlaylistModalContext.js'
 import { makeAuthenticatedPOSTrequest } from '../../utils/apiCall.js'
 import { toast } from 'react-toastify'
+
 const SingleSongCard = ({
   songTitle = 'Title of the song',
   artist = '',
@@ -25,6 +26,8 @@ const SingleSongCard = ({
   const { isOpenPlaylist, setIsOpenPlaylist, setCrntSongId } = useContext(
     addToPlaylistModalContext
   )
+  const [showDropdown, setShowDropdown] = useState(false)
+
   const removeFromPlaylist = async (songID, playlistID) => {
     try {
       const response = await makeAuthenticatedPOSTrequest(
@@ -49,7 +52,7 @@ const SingleSongCard = ({
 
   return (
     <div
-      className={` opacity-80 text-white w-full h-16 min-w-[260px] hover:bg-zinc-900  md:max-w-[500px]   bg-zinc-800 p-2 rounded-lg flex `}
+      className={` text-white w-full h-16 min-w-[260px] hover:bg-zinc-900 md:max-w-[500px] bg-zinc-800 p-2 rounded-lg flex`}
     >
       <div
         onClick={() => {
@@ -59,61 +62,70 @@ const SingleSongCard = ({
         className="relative group w-[45px] h-[45px] rounded-lg mr-3 overflow-hidden"
       >
         <img src={thumbnail} alt="" className="" />
-        <div className="hidden  bg-black opacity-50 w-full h-full group-hover:flex items-center justify-center absolute top-0 rounded-lg">
+        <div className="hidden bg-black opacity-50 w-full h-full group-hover:flex items-center justify-center absolute top-0 rounded-lg">
           <button className="">
-            <IoPlay className="text-green-500  text-2xl rounded-full" />
+            <IoPlay className="text-green-500 text-2xl rounded-full" />
           </button>
         </div>
       </div>
       <div className="overflow-hidden my-auto flex-grow">
         <h3 className="text-md hover:underline ">{songTitle}</h3>
-        <h5 className="text-xs  hover:underline font-light">{artist}</h5>
+        <h5 className="text-xs hover:underline font-light">{artist}</h5>
       </div>
-      <span className=" my-auto  text-zinc-500 mr-2">{duration}</span>
-      <span className="relative group my-auto  text-white text-xl font-bold ">
-        <button>
+      <span className="my-auto text-zinc-500 mr-2">{duration}</span>
+      <span className="relative my-auto text-white text-xl font-bold">
+        <button onClick={() => setShowDropdown(!showDropdown)}>
           <HiDotsVertical />
         </button>
-        <div className="absolute text-zinc-400 z-[234] top-0 -left-[800%] md:-left-[300%] w-max hidden rounded-lg group-hover:flex border-zinc-700 bg-zinc-900 opacity-100 ">
-          <div className="flex flex-col w-full text-right  overflow-hidden  ">
-            <button
-              onClick={() => {
-                setCurrentSong(() => info)
-              }}
-              className="text-sm border-b-[1px] hover:text-white w-200px p-2 border-zinc-700 "
-            >
-              Play
-            </button>
-            <button
-              onClick={() => {
-                setQueue((prev) => [...prev, info])
-                console.log(queue)
-              }}
-              className="text-sm w-200px p-2 hover:text-white  border-b-[1px] border-zinc-700"
-            >
-              Add To Queue
-            </button>
-            <button
-              onClick={() => {
-                setIsOpenPlaylist(true)
-                setCrntSongId(info._id)
-              }}
-              className="text-sm w-200px p-2 hover:text-white   border-b-[1px] border-zinc-700 "
-            >
-              Add To Playlist
-            </button>
-            {inPlaylist && (
+        {showDropdown && (
+          <div
+            id="threedot"
+            className="absolute  text-zinc-400 z-[234] top-full right-0 mt-1 w-max rounded-xl border-zinc-700 bg-zinc-900"
+          >
+            <div className="flex flex-col w-full rounded-xl text-right overflow-hidden">
               <button
                 onClick={() => {
-                  removeFromPlaylist(info._id, playlistID)
+                  setCurrentSong(() => info)
+                  setShowDropdown(false)
                 }}
-                className="text-sm w-200px p-2 hover:text-white   border-b-[1px] border-zinc-700 "
+                className="text-sm border-b-[1px] hover:text-white w-200px p-2 border-zinc-700"
               >
-                Remove from Playlist
+                Play
               </button>
-            )}
+              <button
+                onClick={() => {
+                  setQueue((prev) => [...prev, info])
+                  console.log(queue)
+                  setShowDropdown(false)
+                }}
+                className="text-sm w-200px p-2 hover:text-white border-b-[1px] border-zinc-700"
+              >
+                Add To Queue
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpenPlaylist(true)
+                  setCrntSongId(info._id)
+                  setShowDropdown(false)
+                }}
+                className="text-sm w-200px p-2 hover:text-white border-b-[1px] border-zinc-700"
+              >
+                Add To Playlist
+              </button>
+              {inPlaylist && (
+                <button
+                  onClick={() => {
+                    removeFromPlaylist(info._id, playlistID)
+                    setShowDropdown(false)
+                  }}
+                  className="text-sm w-200px p-2 hover:text-white border-b-[1px] border-zinc-700"
+                >
+                  Remove from Playlist
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </span>
     </div>
   )
