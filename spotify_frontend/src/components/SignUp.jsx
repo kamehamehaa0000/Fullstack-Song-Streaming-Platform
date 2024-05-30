@@ -81,7 +81,7 @@ const SignUp = () => {
 
       <p className="font-semibold text-lg mb-8 text-center">
         Sign-Up for free, To start listening on{' '}
-        <span className="text-green-500">Spotify</span>
+        <span className="text-green-500">Groove</span>
       </p>
 
       <div className="max-w-md w-full p-4 bg-white text-black rounded-lg  sm:shadow-lg dark:bg-black dark:text-white ">
@@ -139,7 +139,7 @@ const SignUp = () => {
         <div className="flex items-center justify-between mt-4">
           <h5 className="text-sm hover:text-green-500">Forgot Password?</h5>
           <button
-            className="px-4 py-2 text-white bg-green-500 rounded-full "
+            className="relative w-[150px]  my-4  px-4 py-1 rounded-full bg-zinc-900 isolation-auto z-10 border-neutral-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-green-500 text-white before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700"
             onClick={handleSignUp}
           >
             Sign Up
@@ -150,7 +150,7 @@ const SignUp = () => {
       <div className="mt-8 text-center">
         <p className="font-semibold">Already have an account?</p>
         <NavLink to={'/login'}>
-          <button className="px-5 py-2 border-2 border-black text-black rounded-full mt-4 bg-transparent hover:bg-green-500 hover:text-white dark:border-white dark:text-white">
+          <button className="relative w-[150px]  my-4  px-4 py-1 rounded-full bg-zinc-900 isolation-auto z-10 border-neutral-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-green-500 text-white before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700">
             Login
           </button>
         </NavLink>
