@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import HoverText from './shared/hoverText'
 import { NavLink } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
-
+import songContext from './contexts/songContext'
 const Navbar = ({ isLogin, userDets }) => {
   const [cookies, setCookie, removeCookie] = useCookies(['authToken'])
-
+  const { currentSong, setCurrentSong, setSoundPlayed, setIsPlaying } =
+    useContext(songContext)
   const handleLogout = () => {
     removeCookie('authToken')
     removeCookie('details')
+    setCurrentSong(null)
+    setSoundPlayed(null)
+    setIsPlaying(false)
   }
   return (
     <div className=" absolute left-0 z-[2] top-0 flex items-center justify-end w-full h-16 dark:bg-black bg-[#22C55E]  ">

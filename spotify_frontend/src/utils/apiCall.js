@@ -38,3 +38,13 @@ export const makeAuthenticatedGETrequest = async (route, token) => {
   const formattedResponse = await response.json()
   return formattedResponse
 }
+export const makeUnauthenticatedGETrequest = async (route) => {
+  const response = await fetch(`${ApiURL}${route}`, {
+    method: 'GET',
+    headers: {
+      'content-Type': 'application/json',
+    },
+  })
+  const formattedResponse = await response.json()
+  return formattedResponse
+}

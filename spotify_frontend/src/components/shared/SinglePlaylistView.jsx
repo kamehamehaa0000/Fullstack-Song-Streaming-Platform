@@ -13,7 +13,7 @@ const SinglePlaylistView = ({ data, token, refreshPlaylist }) => {
             <img
               src={data?.thumbnail || 'https://via.placeholder.com/150'}
               alt="Playlist Cover"
-              className=" mx-auto w-full sm:w-1/3 h-full max-h-60  rounded-xl mr-6"
+              className="object-center object-contain mx-auto w-full sm:w-1/3 h-full max-h-60  rounded-xl mr-6"
             />
             <div className="h-full self-start text-center sm:text-left w-full p-4">
               <h1 className="text-2xl md:text-4xl xl:text-6xl font-semibold">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { makeAuthenticatedGETrequest } from '../utils/apiCall'
 import Card from './shared/Card.jsx'
-import { useNavigate } from 'react-router'
+
 const YourLibrary = ({ token }) => {
   const [playlistData, setPlaylistData] = useState([])
   useEffect(() => {
@@ -14,9 +14,7 @@ const YourLibrary = ({ token }) => {
     }
     fetchData()
   }, [])
-  const handleClick = (playlist) => {
-    navigate(`/playlist/${playlist._id}`)
-  }
+
   return (
     <div className="w-full h-full py-16 sm:px-6 text-white">
       <h1 className="text-xl lg:text-3xl md:px-4 py-5 my-3 font-semibold">

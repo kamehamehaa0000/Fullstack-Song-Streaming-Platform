@@ -37,6 +37,7 @@ const CreatePlaylist = ({ token }) => {
       toast.success('Playlist Successfully Created !')
       setLoading(false)
       setName('')
+      setDescription('')
       setThumbnail(null)
       setIsOpen(false)
     } catch (error) {

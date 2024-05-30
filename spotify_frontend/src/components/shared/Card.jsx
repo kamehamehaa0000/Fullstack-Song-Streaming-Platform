@@ -7,19 +7,24 @@ const Card = ({ title, image, description, playlistID }) => {
   const handleClick = (playlistId) => {
     navigate(`/playlist/${playlistId}`)
   }
+
   return (
-    <div className="max-w-[270px] group col-span-1 text-white flex flex-col h-full p-3 rounded-xl sm:min-w-[190px] bg-green-500 dark:bg-stone-900 ">
-      <div className="z-1 relative overflow-hidden w-full mb-1 rounded-md">
-        <img src={image ? `${image}` : `./card.webp`} alt="" />
+    <div className="flex flex-col h-full items-center group bg-green-500 dark:bg-stone-900 rounded-xl overflow-hidden m-2 p-3 transition-transform transform hover:scale-105 shadow-lg max-w-[200px]">
+      <div className="relative w-full mb-3 rounded-md overflow-hidden">
+        <img
+          src={image || './card.webp'}
+          alt={title}
+          className="w-full h-40 object-cover"
+        />
         <button
           onClick={() => handleClick(playlistID)}
-          className="hidden group-hover:block absolute bottom-1 right-1 rounded-full w-fit p-2 bg-green-500"
+          className="hidden group-hover:block absolute bottom-2 right-2 rounded-full p-2 bg-green-500 text-white shadow-md"
         >
           <FaPlay />
         </button>
       </div>
-      <h1 className="text-sm sm:text-md py-2 font-bold capitalize">{title}</h1>
-      <p className="hidden sm:block text-sm font-normal capitalize dark:text-zinc-400">
+      <h1 className="text-base font-bold text-center capitalize">{title}</h1>
+      <p className="hidden sm:block text-sm font-normal text-center dark:text-zinc-400 mt-2">
         {description}
       </p>
     </div>
