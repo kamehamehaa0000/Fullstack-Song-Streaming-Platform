@@ -4,6 +4,7 @@ import { makeAuthenticatedGETrequest } from '../utils/apiCall'
 import { useParams } from 'react-router'
 const Playlist = ({ token }) => {
   const { playlistID } = useParams()
+  const [refresh, setRefresh] = useState(0)
   const [playlistData, setPlaylistData] = useState([])
   useEffect(() => {
     const fetchData = async () => {
@@ -14,14 +15,14 @@ const Playlist = ({ token }) => {
       setPlaylistData(response.data)
     }
     fetchData()
-  }, [playlistID])
+  }, [playlistID, refresh])
 
   return (
     <div className="py-20 md:px-10 text-white">
       <SinglePlaylistView
         data={playlistData}
         token={token}
-        refreshPlaylist={setPlaylistData}
+        refreshPlaylist={setRefresh}
       />
     </div>
   )

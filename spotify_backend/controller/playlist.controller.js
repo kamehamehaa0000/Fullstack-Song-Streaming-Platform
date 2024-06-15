@@ -218,7 +218,7 @@ const removeSong = asyncHandler(async (req, res) => {
 const updatePlaylist = asyncHandler(async (req, res) => {
   try {
     const { playlistID } = req.params
-    const { name, description } = req.body
+    const { name, description, songs } = req.body
     const currentUser = req.user
 
     const playlist = await Playlist.findOne({ _id: playlistID })
@@ -241,6 +241,9 @@ const updatePlaylist = asyncHandler(async (req, res) => {
     }
     if (description) {
       playlist.description = description
+    }
+    if (songs) {
+      playlist.songs = songs
     }
     await playlist.save()
 

@@ -8,6 +8,7 @@ import {
   getAllPlaylist,
   getPlaylistByUser,
   removeSong,
+  updatePlaylist,
 } from '../controller/playlist.controller.js'
 import { upload } from '../middlewares/multer.middleware.js'
 
@@ -39,4 +40,7 @@ router.route('/getall').get(getAllPlaylist)
 router
   .route('/myplaylists')
   .get(passport.authenticate('jwt', { session: false }), getPlaylistByUser)
+router
+  .route('/update/:playlistID')
+  .post(passport.authenticate('jwt', { session: false }), updatePlaylist)
 export default router
