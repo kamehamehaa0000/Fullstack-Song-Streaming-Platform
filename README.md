@@ -6,8 +6,7 @@ Welcome to the Music Streaming Site project! This is a full-fledged music stream
 
 Check out the live site here: [Live Site URL](https://groovygaana.vercel.app/) </br>
 
-Note : wait for a minunte if the site does not opens correctly cause backend is deployed on a free service and it shuts down if inactivity is found.
-
+Note : wait for a minunte if the site does not open up correctly ,Because backend is deployed on a free service and it shuts down if inactivity is found.
 ## Features
 
 - User authentication and authorization
